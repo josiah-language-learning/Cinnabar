@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Compiles the counter module and its client, then runs the client.
+set -euo pipefail
+echo "=== Compiling..."
+mmc --make --grade asm_fast.par.gc.stseg counter_client 2>&1 || { echo "COMPILE FAILED"; exit 1; }
+echo "=== Running..."
+output=$(./counter_client 2>&1)
+echo "$output"
+if echo "$output" | grep -q "^FAIL:"; then
+    echo ""
+    echo "Some tests FAILED."
+    exit 1
+fi
+echo ""
+echo "All tests PASSED."

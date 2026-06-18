@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# This kata has no code — it is a reference document about Mercury grades.
+# Read the README.md, then try compiling a hello-world with different grades:
+#   mmc --make --grade asm_fast.gc hello
+#   mmc --make --grade hlc.gc hello
+#   mmc --make --grade asm_fast.par.gc hello
+echo "01-grades: reference kata — no code to run."
+echo "Read the README for grade combinations and their trade-offs."
+exit 0

@@ -1,0 +1,150 @@
+# ==============================================================
+# Mercury build artifacts
+# ==============================================================
+
+# mmc intermediate build directory (C output, object files, dep files)
+Mercury/
+
+# mmc-generated Mercury interface headers
+*.mh
+
+# mmc error log (usually empty on success, never meaningful to track)
+*.err
+
+# mmc-generated C source, init files, and object files (may land in source dir
+# depending on how mmc is invoked, not just inside Mercury/)
+*_init.c
+*_init.o
+*.c_date
+*.d
+*.o
+# Generated C from start.m (kata convention: all starters named start.m)
+start.c
+
+# Compiled executables — mmc outputs a binary with the same name as the module.
+# All module names in this repo are listed below.
+# Kata executables (all named 'start')
+start
+# Bridge starters and helpers
+config_reader
+convert
+pipeline
+search
+tokenizer
+utils
+# Bridge solution helpers
+cc_unwrapped
+client
+fixed
+fixed_client
+fixed_utils
+main
+multi_guard
+nondet_direct
+par_semidet
+reverse_mode
+semidet_io
+stack
+stack_client
+unique_clobber
+# Koan executables
+adt_koan
+committed_koan
+dcg_koan
+dcg_mixed_koan
+dcg_mode_koan
+det_koan
+exceptions_koan
+existential_koan
+ffi_koan
+file_io_koan
+free_variable
+ground_not_unique
+ho_inst_koan
+ho_inst_mismatch
+ho_koan
+inference_koan
+inst_koan
+maybe_koan
+mod_name_koan
+nondet_koan
+parallel_koan
+parametric_koan
+shared_state_koan
+string_koan
+typeclass_koan
+types_koan
+uniqueness_koan
+# Kata / tooling executables
+buggy_index
+counter
+counter_client
+fib_profile
+# Solution executables
+anagrams
+bidir
+calculator
+combinators
+config_parser
+crypto
+csv_reader
+expr_eval
+gen_parser
+generic_printer
+graph
+histogram
+meta_interp
+memoized_search
+nqueens
+parallel_sort
+pipeline
+plugins
+stats_pipeline
+sudoku
+
+# ==============================================================
+# Vim
+# ==============================================================
+*.swp
+*.swo
+.*.swp
+.*.swo
+*~
+Session.vim
+.netrwhist
+tags
+
+# ==============================================================
+# Emacs
+# ==============================================================
+\#*\#
+.\#*
+*.orig
+auto-save-list
+.emacs.desktop
+.emacs.desktop.lock
+*_flymake.*
+.org-id-locations
+
+# ==============================================================
+# Aider
+# ==============================================================
+.aider.input.history
+.aider.output.history
+.aider.chat.history.md
+.aider.tags.cache.v3/
+.aider.tags.cache.v4/
+.aider/
+
+# ==============================================================
+# Claude Code
+# ==============================================================
+.claude/settings.local.json
+
+# ==============================================================
+# Codex / OpenCode / Continue / other AI coding tools
+# ==============================================================
+.codex/
+.opencode/
+.continue/
+.cursor/

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+echo "=== Compiling with debug grade (for mdb)..."
+mmc --make --grade asm_fast.gc.debug.stseg buggy_index 2>&1 \
+    || { echo "COMPILE FAILED"; exit 1; }
+echo "=== Running (observe the -1 index bug in output)..."
+./buggy_index
+echo ""
+echo "To debug: run 'mdb ./buggy_index' and set a breakpoint on nth_element."

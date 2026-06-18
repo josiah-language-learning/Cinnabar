@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+echo "=== Compiling (standard grade for timing comparison)..."
+mmc --make --grade asm_fast.par.gc.stseg fib_profile 2>&1 || { echo "COMPILE FAILED"; exit 1; }
+echo "=== Running..."
+time ./fib_profile
+echo ""
+echo "To profile: mmc --make --grade asm_fast.gc.profdeep.stseg fib_profile"
+echo "Then: ./fib_profile && mdprof_text fib_profile.data"

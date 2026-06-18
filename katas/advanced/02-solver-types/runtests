@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Solver types (the `.tr` grade + external CLP) are not available in a
+# standard Mercury 22.01.8 install.  This kata is a reference document only.
+echo "02-solver-types: reference kata — requires .tr grade + external CLP library."
+echo "Read the README for the conceptual background."
+exit 0

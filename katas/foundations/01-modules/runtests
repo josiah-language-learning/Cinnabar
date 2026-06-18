@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Builds the two-module temperature converter and prints conversion results.
+# Visual check: all four expected values should appear in the output.
+set -euo pipefail
+echo "=== Compiling..."
+mmc --make --grade asm_fast.par.gc.stseg main 2>&1 || { echo "COMPILE FAILED"; exit 1; }
+echo "=== Running..."
+./main
