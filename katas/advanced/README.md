@@ -12,5 +12,6 @@ them in order before tackling the advanced puzzles.
 | `04-pragma-memo/` | `pragma memo` for deterministic predicates; manual memoization via state-threaded map |
 | `05-assoc-list-env/` | Association lists as environments: lookup, shadowing, deref chains; the idiom the meta-interpreter uses |
 | `06-abstract-module/` | Abstract type declaration; information hiding; `use_module` vs `import_module`; swapping implementations without touching clients |
+| `07-ffi-pragma-attrs/` | `will_not_call_mercury`, `promise_pure`, `thread_safe` — what each attribute does and the cost of omitting it |
 
 **Not in the Mercury tutorial.**

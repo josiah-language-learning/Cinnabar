@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+echo "=== Compiling..."
+mmc --make --grade asm_fast.par.gc.stseg start 2>&1 || { echo "COMPILE FAILED"; exit 1; }
+echo "=== Running..."
+output=$(./start 2>&1)
+echo "$output"
+if ! echo "$output" | grep -q "first even: 4"; then
+    echo ""
+    echo "FAIL: expected 'first even: 4'"
+    exit 1
+fi
+if ! echo "$output" | grep -q "done"; then
+    echo ""
+    echo "FAIL: expected 'done'"
+    exit 1
+fi
+echo ""
+echo "All tests PASSED."

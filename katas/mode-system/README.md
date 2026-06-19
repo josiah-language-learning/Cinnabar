@@ -12,5 +12,6 @@ constraint solver.
 | `03-uniqueness-deep/` | Arrays, `di`/`uo`, uniqueness loss in disjunctions, `version_array` |
 | `04-higher-order-insts/` | Dispatch tables, inst annotations on higher-order values |
 | `05-mode-specific-clauses/` | `my_append/3` with three modes |
+| `08-array-threading/` | `array(T)` (unique, di/uo threading) vs `version_array(T)` (persistent, aliasable): histogram exercise |
 
 `09-mode-inference` in the foundations track is prerequisite.

@@ -86,6 +86,19 @@ stm_context_koan
 counter
 counter_client
 fib_profile
+# New koan executables (from COMPILER-LESSONS gap fill)
+imports_koan
+int_ops_koan
+goal_expr_koan
+err_msg_koan
+foldl_func_koan
+char_digit_koan
+instance_body_koan
+phantom_con_koan
+func_semidet_koan
+nondet_cond_koan
+promise_equiv_koan
+prop_ops_koan
 # Solution executables
 anagrams
 bidir
@@ -154,3 +167,10 @@ auto-save-list
 .opencode/
 .continue/
 .cursor/
+
+# ==============================================================
+# npm / Node (stray artifacts — not part of this project)
+# ==============================================================
+node_modules/
+package.json
+package-lock.json

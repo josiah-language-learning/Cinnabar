@@ -1071,26 +1071,31 @@ scope where the type context is cleaner, then call `io.error_message` there.
 
 ---
 
-### `/` is not defined for `int` — use `//` for integer division
+### `/` and `//` for `int` — both work in Mercury 22, but not always
 
-**Symptom:**
+**Symptom (older Mercury or missing import):**
 ```
 error: undefined symbol `/'/2.
 That symbol is defined in module `float', which does not have an
 `:- import_module' declaration.
 ```
 
-Or a type error suggesting the result was expected to be `float`.
+**Cause and Mercury 22 status:** In Mercury 22.01.8, both `/` and `//` are defined
+on `int` (with `import_module int`) and both perform truncating integer division:
+`7 / 2 = 3`, `7 // 2 = 3`. The "undefined symbol" error appears only when
+`import_module int` is missing and the compiler resolves `/` to the `float` module
+instead.
 
-**Cause:** Mercury uses distinct operators for integer and float division:
+In older Mercury versions (or with no int import), `/` on `int` was ambiguous or
+resolved to float:
 - `//` — integer division (truncates toward zero), defined on `int`
-- `/` — float division, defined on `float`
+- `/` — float division, defined on `float` (older behavior)
 
-Using `/` on `int` expressions either gives "undefined symbol" (if `float` is not
-imported) or a type error (if it is). This surprises Prolog programmers used to
-`is/2` and Python/Java programmers used to `/` being overloaded.
+If you see "That symbol is defined in module `float'" after writing `N / 2` for an
+`int` variable, add `import_module int`. Use `//` by preference if you want clarity
+across Mercury versions.
 
-**Fix:** Replace `/` with `//` for integer division:
+**Fix:** Add `import_module int` and/or use `//` for explicit integer division:
 
 ```mercury
 average(A, B) = (A + B) // 2.
