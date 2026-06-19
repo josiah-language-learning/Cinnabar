@@ -39,14 +39,14 @@ Katas and koans are organized into tracks. Puzzles draw on multiple tracks and l
 
 | Track | Katas | Koans | Start here |
 |---|---|---|---|
-| Foundations | 12 | 19 | `katas/foundations/00-reactivation/01-hello-world` |
+| Foundations | 12 | 20 | `katas/foundations/00-reactivation/01-hello-world` |
 | Type system | 10 | 10 | `katas/type-system/01-discriminated-unions` |
 | Mode system | 8 | 7 | `katas/mode-system/01-insts-and-modes` |
 | Determinism | 7 | 7 | `katas/determinism/01-six-categories` |
 | Parsing | 9 | 7 | `katas/parsing/01-dcg-basics` |
 | Tooling | 6 | 9 | `katas/tooling/01-grades` |
 | Concurrency | 9 | 7 | `katas/concurrency/01-parallel-conjunction` |
-| Advanced | 7 | 7 | `katas/advanced/01-ffi-depth` |
+| Advanced | 7 | 8 | `katas/advanced/01-ffi-depth` |
 
 ### Bridges
 

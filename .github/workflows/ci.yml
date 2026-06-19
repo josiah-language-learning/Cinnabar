@@ -1,0 +1,23 @@
+# PLACEHOLDER — will not run until the flake's SSH input (mise) is wired up.
+# See TODO.md Tier 4 for the remaining CI rigging work.
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  check:
+    if: false  # disabled until flake SSH input (mise) is wired up
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v14
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+
+      - name: Run CI gate
+        run: nix develop --command ./ci.sh

@@ -1,95 +1,38 @@
 
-# aider chat started at 2026-06-18 16:13:38
+# aider chat started at 2026-06-19 19:14:16
 
-> /home/josiah/.local/bin/aider --no-git --chat-mode ask --model openrouter/inclusionai/ring-2.6-1t --map-tokens 4000 --yes --no-auto-commits --message-file /tmp/ring-r2-prompt.txt --chat-history-file /home/josiah/Development/personal/education/self/polyparadigm-project/cinnabar/RING-REVIEWS/02-coverage.md  
+> /home/josiah/.local/bin/aider --no-git --chat-mode ask --model openrouter/inclusionai/ring-2.6-1t --map-tokens 1000 --yes --no-auto-commits --read README.md --read katas/README.md --read katas/foundations/README.md --read katas/type-system/README.md --read katas/mode-system/README.md --read katas/determinism/README.md --read katas/parsing/README.md --read katas/tooling/README.md --read katas/concurrency/README.md --read katas/advanced/README.md --read katas/concurrency/09-stm/README.md --read katas/determinism/07-promise-equiv-solutions/README.md --read katas/advanced/02-solver-types/README.md --read katas/tooling/06-property-testing/README.md --read bridge/11-error-handling/README.md --read koans/advanced/07-solver-any-inst/README.md --read CLP-PLAN.md --message-file /tmp/ring-r2-prompt.txt --chat-history-file /home/josiah/Development/personal/education/self/polyparadigm-project/cinnabar/RING-REVIEWS/02-coverage.md  
 > Aider v0.86.2  
 > Model: openrouter/inclusionai/ring-2.6-1t with ask edit format  
 > Git repo: none  
 > Repo-map: disabled  
-
-#### You are reviewing the Cinnabar Mercury curriculum project in the current directory. Cinnabar is a post-tutorial exercise repository for Mercury programmers — katas, koans, bridges, and puzzles organized into tracks.  
-####   
-#### REVIEW FOCUS: Coverage — breadth and depth of Mercury language concepts.  
-####   
-#### Survey the full curriculum structure: katas/, koans/, bridge/, and puzzles/. Read the README.md in each track and a sample of exercise READMEs to understand what concepts are covered.  
-####   
-#### Evaluate:  
-#### 1. BREADTH: What are the major Mercury language concepts? Which are covered, which are absent or thin?  
-####    Key areas to check: determinism (all 6 categories), mode system (insts, multi-mode, uniqueness), type system (ADTs, parametric polymorphism, typeclasses, existential types, phantom types), higher-order predicates (inst annotations, partial application), DCG parsing, concurrency (parallel conjunction, channels, unique state), meta-programming, FFI, standard library (list, map, set, string, io).  
-####   
-#### 2. DEPTH: Do harder concepts get harder exercises? Does the curriculum plateau at an intermediate level, or does it push into advanced Mercury?  
-####   
-#### 3. SEQUENCING: Are concepts introduced in the right order? Are there cases where an exercise assumes knowledge not yet covered?  
-####   
-#### 4. GAPS: What important Mercury concept is most notably absent? What would a post-tutorial learner most likely need that isn't here?  
-####   
-#### 5. REDUNDANCY: Are any concepts over-covered relative to their importance?  
-####   
-#### Be specific about which tracks/exercises cover which concepts. Rate coverage breadth and depth separately on 1–10 scales.  
-
-<thinking-content-7bbeb8e1441453ad999a0bbba8a46d4b>
-
-
-
-The user wants me to review the Cinnabar Mercury curriculum project in the current directory. They haven't shared file contents yet, so I need to explore the directory structure first. Let me start by surveying the directory structure, then read READMEs and sample exercises.
-
-</thinking-content-7bbeb8e1441453ad999a0bbba8a46d4b>
-
-Let me explore the project structure systematically.
-<tool_call>Bash
-<arg_key>command</arg_key>
-<arg_value>find . -maxdepth 1 -type f -o -type d | head -40</arg_value>
-</tool_call>
-<tool_call>Bash
-<arg_key>command</arg_key>
-<arg_value>ls -la</arg_value>
-</tool_call>
-
-> Tokens: 414 sent, 188 received. Cost: $0.00015 message, $0.00015 session.  
-
-# aider chat started at 2026-06-18 16:15:59
-
-> /home/josiah/.local/bin/aider --no-git --chat-mode ask --model openrouter/inclusionai/ring-2.6-1t --map-tokens 1000 --yes --no-auto-commits --read README.md --read katas/README.md --read katas/foundations/README.md --read katas/type-system/README.md --read katas/mode-system/README.md --read katas/determinism/README.md --read katas/parsing/README.md --read katas/tooling/README.md --read katas/concurrency/README.md --read katas/advanced/README.md --read katas/foundations/04-higher-order/README.md --read katas/foundations/09-mode-inference/README.md --read katas/type-system/05-existential-types/README.md --read katas/type-system/09-phantom-types/README.md --read katas/mode-system/02-multi-mode/README.md --read katas/mode-system/03-uniqueness-deep/README.md --read katas/determinism/02-committed-choice/README.md --read katas/determinism/06-determinism-and-negation/README.md --read katas/parsing/04-dcg-determinism/README.md --read katas/parsing/08-packrat/README.md --read katas/concurrency/07-uniqueness-and-threads/README.md --read katas/advanced/01-ffi-depth/README.md --read katas/advanced/03-rtti/README.md --read puzzles/advanced/05-generic-parser/README.md --read puzzles/advanced/06-plugin-architecture/README.md --read puzzles/advanced/07-mercury-in-mercury/README.md --message-file /tmp/ring-r2-prompt.txt --chat-history-file /home/josiah/Development/personal/education/self/polyparadigm-project/cinnabar/RING-REVIEWS/02-coverage.md  
-> Aider v0.86.2  
-> Model: openrouter/inclusionai/ring-2.6-1t with ask edit format  
-> Git repo: none  
-> Repo-map: disabled  
-> Added katas/README.md to the chat (read-only).  
-> Added katas/parsing/08-packrat/README.md to the chat (read-only).  
-> Added katas/type-system/README.md to the chat (read-only).  
-> Added puzzles/advanced/05-generic-parser/README.md to the chat (read-only).  
-> Added katas/concurrency/README.md to the chat (read-only).  
-> Added puzzles/advanced/06-plugin-architecture/README.md to the chat (read-only).  
-> Added puzzles/advanced/07-mercury-in-mercury/README.md to the chat (read-only).  
-> Added katas/foundations/README.md to the chat (read-only).  
-> Added katas/determinism/README.md to the chat (read-only).  
-> Added katas/determinism/02-committed-choice/README.md to the chat (read-only).  
-> Added katas/foundations/04-higher-order/README.md to the chat (read-only).  
-> Added katas/foundations/09-mode-inference/README.md to the chat (read-only).  
-> Added katas/advanced/03-rtti/README.md to the chat (read-only).  
-> Added katas/type-system/05-existential-types/README.md to the chat (read-only).  
-> Added katas/concurrency/07-uniqueness-and-threads/README.md to the chat (read-only).  
-> Added katas/advanced/README.md to the chat (read-only).  
-> Added katas/tooling/README.md to the chat (read-only).  
 > Added katas/mode-system/README.md to the chat (read-only).  
+> Added katas/concurrency/README.md to the chat (read-only).  
 > Added katas/parsing/README.md to the chat (read-only).  
-> Added katas/mode-system/02-multi-mode/README.md to the chat (read-only).  
+> Added katas/advanced/README.md to the chat (read-only).  
+> Added bridge/11-error-handling/README.md to the chat (read-only).  
+> Added katas/tooling/README.md to the chat (read-only).  
+> Added CLP-PLAN.md to the chat (read-only).  
 > Added README.md to the chat (read-only).  
-> Added katas/mode-system/03-uniqueness-deep/README.md to the chat (read-only).  
-> Added katas/type-system/09-phantom-types/README.md to the chat (read-only).  
-> Added katas/determinism/06-determinism-and-negation/README.md to the chat (read-only).  
-> Added katas/parsing/04-dcg-determinism/README.md to the chat (read-only).  
-> Added katas/advanced/01-ffi-depth/README.md to the chat (read-only).  
+> Added katas/type-system/README.md to the chat (read-only).  
+> Added katas/determinism/README.md to the chat (read-only).  
+> Added katas/concurrency/09-stm/README.md to the chat (read-only).  
+> Added katas/advanced/02-solver-types/README.md to the chat (read-only).  
+> Added katas/README.md to the chat (read-only).  
+> Added katas/foundations/README.md to the chat (read-only).  
+> Added koans/advanced/07-solver-any-inst/README.md to the chat (read-only).  
+> Added katas/tooling/06-property-testing/README.md to the chat (read-only).  
+> Added katas/determinism/07-promise-equiv-solutions/README.md to the chat (read-only).  
 
 #### You are reviewing the Cinnabar Mercury curriculum project in the current directory. Cinnabar is a post-tutorial exercise repository for Mercury programmers — katas, koans, bridges, and puzzles organized into tracks.  
 ####   
 #### REVIEW FOCUS: Coverage — breadth and depth of Mercury language concepts.  
 ####   
-#### Survey the full curriculum structure: katas/, koans/, bridge/, and puzzles/. Read the README.md in each track and a sample of exercise READMEs to understand what concepts are covered.  
+#### You have been given all track-level READMEs and several exercise READMEs.  
 ####   
 #### Evaluate:  
 #### 1. BREADTH: What are the major Mercury language concepts? Which are covered, which are absent or thin?  
-####    Key areas to check: determinism (all 6 categories), mode system (insts, multi-mode, uniqueness), type system (ADTs, parametric polymorphism, typeclasses, existential types, phantom types), higher-order predicates (inst annotations, partial application), DCG parsing, concurrency (parallel conjunction, channels, unique state), meta-programming, FFI, standard library (list, map, set, string, io).  
+####    Key areas to check: determinism (all 6 categories), mode system (insts, multi-mode, uniqueness), type system (ADTs, parametric polymorphism, typeclasses, existential types, phantom types), higher-order predicates (inst annotations, partial application), DCG parsing, concurrency (parallel conjunction, channels, unique state, STM), meta-programming, FFI, standard library (list, map, set, string, io), solver types, property-based testing, error handling patterns.  
 ####   
 #### 2. DEPTH: Do harder concepts get harder exercises? Does the curriculum plateau at an intermediate level, or does it push into advanced Mercury?  
 ####   
@@ -105,363 +48,321 @@ Let me explore the project structure systematically.
 
 
 
-The user wants me to review the Cinnabar Mercury curriculum project for coverage breadth and depth. They've already shared several README files from the project. Let me survey what I have and provide a thorough evaluation.
+Let me carefully analyze the Cinnabar Mercury curriculum based on all the reference materials provided. I need to evaluate coverage breadth and depth, sequencing, gaps, and redundancy.
 
-Let me organize what I know from the shared files:
+**BREADTH ANALYSIS — Mapping concepts to coverage:**
 
-**Katas tracks (from READMEs and shared files):**
+1. **Determinism (all 6 categories):**
+   - Covered in `katas/determinism/` with 7 katas
+   - README mentions: `01-six-categories/` (det, semidet, multi, nondet, erroneous, failure), `02-committed-choice/` (cc_multi/cc_nondet, promise_equivalent_solutions), `03-scope-annotations/` (require_complete_switch, require_det), `07-promise-equiv-solutions/` (two forms)
+   - That's 4 out of 7 katas documented. Missing: 04, 05, 06 presumably exist but aren't described in the provided README.
+   - Coverage: All 6 categories are addressed. Good.
 
-1. **Foundations** (katas/foundations/README.md): 12 exercises
-   - 00-reactivation: Predict/verify pass
-   - 01-modules: Module system
-   - 02-maybe: maybe(T), map_maybe, bind_maybe
-   - 03-string: String module
-   - 04-higher-order: Higher-order predicates, list.map/filter/foldl2, storing preds in variables
-   - 05-map: map(K, V)
-   - 06-set: set(T)
-   - 07-exceptions: io.res, exception.catch_any, file I/O
-   - 08-built-in-types: Integer, float, char, string corners
-   - 09-mode-inference: Goal reordering, multi-mode predicates, reading mode errors
+2. **Mode system (insts, multi-mode, uniqueness, higher-order insts):**
+   - Covered in `katas/mode-system/` with 8 katas (per main README)
+   - Documented katas: `01-insts-and-modes/` (user-defined insts, bound(...) patterns, parametric insts), `02-multi-mode/` (mode-specific clauses, promise_equivalent_clauses), `03-uniqueness-deep/` (arrays, di/uo, uniqueness loss, version_array), `04-higher-order-insts/` (dispatch tables, inst annotations on HO values), `05-mode-specific-clauses/` (my_append/3 with three modes), `08-array-threading/` (array(T) vs version_array(T))
+   - Missing from docs: 06, 07 (presumably exist)
+   - Coverage: insts ✓, multi-mode ✓, uniqueness ✓, higher-order insts ✓, di/uo threading ✓
 
-2. **Type System** (katas/type-system/README.md): 10 exercises
-   - 01-discriminated-unions: Recursive ADTs, total pattern matching, semidet constructors
-   - 02-parametric-polymorphism: User-defined tree(T), polymorphic predicates
-   - 03-abstract-types: Opaque types, representation independence
-   - 04-type-classes: Typeclass declaration, instance syntax, constraint propagation
-   - 05-existential-types: Heterogeneous containers, OOP-style dispatch
-   - (Note: 06-09 are referenced but not fully detailed in the shared README — wait, the type-system README only lists 5 entries in the table but mentions "10 exercises" — actually looking again, the table shows 5 entries. But the foundations track says 12 exercises. Let me re-read.)
+3. **Type system (ADTs, parametric polymorphism, typeclasses, existential types, phantom types):**
+   - Covered in `katas/type-system/` with 10 katas
+   - Documented: `01-discriminated-unions/` (recursive ADTs, total pattern matching, semidet constructors), `02-parametric-polymorphism/` (tree(T), polymorphic predicates), `03-abstract-types/` (opaque types, representation independence), `04-type-classes/` (typeclass declaration, instance syntax), `05-existential-types/` (heterogeneous containers, OOP-style dispatch)
+   - 5 out of 10 documented. Missing: 06-10 presumably.
+   - Phantom types: Not explicitly mentioned. Could be covered in the undocumented katas or could be a gap.
 
-Actually, the type-system README lists:
-   - 01-discriminated-unions
-   - 02-parametric-polymorphism
-   - 03-abstract-types
-   - 04-type-classes
-   - 05-existential-types
+4. **Higher-order predicates (inst annotations, partial application):**
+   - `katas/foundations/04-higher-order/` mentions: higher-order predicates, list.map/filter/foldl2, storing preds in variables
+   - `katas/mode-system/04-higher-order-insts/` covers inst annotations on HO values
+   - Bridge 06 mentions "Higher-order predicates with inst annotations"
+   - Partial application: Not explicitly mentioned anywhere in the documents.
+   - Coverage: Moderate — basic HO covered, inst annotations on HO covered, but partial application seems absent.
 
-That's only 5 listed. But the foundations track in the main README says "Type system | 10 | 4". So there must be more exercises (06-09) not detailed in the shared README. One of them is 09-phantom-types (I have that file).
+5. **DCG parsing:**
+   - `katas/parsing/` with 9 katas (per main README) but only 3 documented
+   - Documented: `01-dcg-basics/` (DCG syntax, -->, alternatives), `02-dcg-goals/` ({Goal} semantic actions), `03-parsing-utils/` (parsing_utils, config file parser)
+   - 6 undocumented katas presumably cover more advanced parsing
+   - Coverage: Good foundation, but details of the 6 advanced parsing katas unknown.
 
-3. **Mode System** (katas/mode-system/README.md): 7 exercises
-   - 01-insts-and-modes: User-defined insts, bound(...) patterns, parametric insts
-   - 02-multi-mode: Multiple mode declarations, promise_equivalent_clauses
-   - 03-uniqueness-deep: Arrays, di/uo, uniqueness loss, version_array
-   - 04-higher-order-insts: Dispatch tables, inst annotations on higher-order values
-   - 05-mode-specific-clauses: my_append/3 with three modes
-   (Plus 06 and 07 presumably exist since track says 7)
+6. **Concurrency (parallel conjunction, channels, unique state, STM):**
+   - `katas/concurrency/` with 9 katas
+   - Documented: `01-parallel-conjunction/`, `02-threads/` (thread.spawn, thread.channel), `03-concurrent-io/`, `04-granularity/`, `05-deadlock/`, `06-parallel-map-fold/`, `07-uniqueness-and-threads/`, `08-deterministic-parallelism/`, `09-stm/`
+   - All 9 documented with topics. Excellent coverage.
+   - Coverage: Comprehensive — parallel & (det/cc_multi), threads, channels, unique state across threads, STM with retry/or_else.
 
-4. **Determinism** (katas/determinism/README.md): 6 exercises
-   - 01-six-categories: One predicate per determinism class
-   - 02-committed-choice: cc_multi/cc_nondet, promise_equivalent_solutions
-   - 03-scope-annotations: require_complete_switch, require_det
-   (Plus 04-06, one of which is 06-determinism-and-negation)
+7. **Meta-programming:**
+   - Mentioned in puzzles ("Mercury meta-interpreter" in advanced puzzles)
+   - Bridge 05 mentions "mode-reversal" and "multi-mode predicates"
+   - The `assoc_list_env` kata (advanced/05) mentions "the idiom the meta-interpreter uses"
+   - No dedicated track — appears as a single puzzle
+   - Coverage: Thin. Only a single puzzle, not a track.
 
-5. **Parsing** (katas/parsing/README.md): 9 exercises
-   - 01-dcg-basics: DCG syntax, --->, alternatives, list-of-token input
-   - 02-dcg-goals: {Goal} semantic actions
-   - 03-parsing-utils: parsing_utils.whitespace, next_char, literal, config file parser
-   - 04-dcg-determinism: multi-clause DCG rules, if-then-else for det/semidet
-   - 08-packrat: pragma memo, packrat parsing
-   (Plus exercises 05-07 and 09 presumably)
+8. **FFI:**
+   - `katas/advanced/01-ffi-depth/` covers all four FFI pragmas
+   - `katas/advanced/07-ffi-pragma-attrs/` covers will_not_call_mercury, promise_pure, thread_safe
+   - `CLP-PLAN.md` discusses FFI for Rust CLP engine
+   - Coverage: Good — both basic FFI and pragma attributes covered.
 
-6. **Tooling** (katas/tooling/README.md): 5 exercises
-   - 01-grades: Grade anatomy
-   - 02-debugging-mdb: Compile with .debug, 4-port tracing
-   - 03-profiling: .prof and .profdeep grades
-   - 04-tabling: pragma memo, pragma loop_check, memoized Fibonacci
+9. **Standard library (list, map, set, string, io):**
+   - `foundations/02-maybe/` — maybe(T)
+   - `foundations/03-string/` — string module
+   - `foundations/04-higher-order/` — list.map/filter/foldl2
+   - `foundations/05-map/` — map(K,V)
+   - `foundations/06-set/` — set(T)
+   - `foundations/07-exceptions/` — io.res, exception.catch_any, file I/O
+   - `foundations/08-built-in-types/` — Integer, float, char, string corners
+   - Coverage: Good coverage of core stdlib modules.
 
-7. **Concurrency** (katas/concurrency/README.md): 8 exercises
-   - 01-parallel-conjunction: & operator, det/cc_multi requirement, timing comparison
-   - 02-threads: thread.spawn, thread.channel, producer-consumer
-   (Plus 03-08, one of which is 07-uniqueness-and-threads)
+10. **Solver types:**
+    - `katas/advanced/02-solver-types/` — reference kata
+    - `koans/advanced/07-solver-any-inst/` — koan on any vs ground
+    - `CLP-PLAN.md` — extensive plan for CLP engine
+    - Coverage: Type-system hook is documented but no working constraint engine. The kata is explicitly a reference with pseudocode.
 
-8. **Advanced** (katas/advanced/README.md): 4 exercises
-   - 01-ffi-depth: All four FFI pragmas
-   - 02-solver-types: Reference kata (no working build)
-   - 03-rtti: deconstruct, generic pretty-printer
+11. **Property-based testing:**
+    - `katas/tooling/06-property-testing/` — full kata with generators, properties, runner
+    - Coverage: Good — complete pattern with examples.
 
-**Koans:** Mentioned but not detailed (7 for foundations, 4 for type system, 5 for mode system, 4 for determinism, 3 for parsing, 2 for tooling, 2 for concurrency, 2 for advanced). I don't have details on these.
+12. **Error handling patterns:**
+    - `bridge/11-error-handling/` — maybe chaining, custom error types, io.res for file loading
+    - Coverage: Excellent — three distinct error mechanisms with clear guidance on when to use each.
 
-**Bridges:** 10 bridges listed in the main README:
-   - 01-maybe-extend
-   - 02-pipeline-extend
-   - 03-dcg-extend
-   - 04-determinism-ratchet
-   - 05-mode-reversal
-   - 06-pipeline-parameterization
-   - 07-parser-hardening
-   - 08-expression-language
-   - 09-typeclass-refactor
-   - 10-parallel-pipeline
+13. **Tooling (grades, debugging, profiling, tabling, testing):**
+    - `katas/tooling/` with 6 katas
+    - All documented: grades, debugging with mdb, profiling, tabling (pragma memo), testing (assertion pattern), property testing
+    - Coverage: Good practical coverage of the tooling ecosystem.
 
-**Puzzles:** 17 puzzles across topics:
-   - logic/: Sudoku, N-queens, crypto-arithmetic
-   - data-structures/: Anagram finder, expression evaluator, graph reachability, frequency histogram
-   - parsing/: Calculator, CSV reader, config parser
-   - concurrent/: Parallel sort, pipeline, pipeline with unique state
-   - advanced/: Generic printer, memoized search, bidirectional search, combinator library, generic parser, plugin architecture, Mercury meta-interpreter
+14. **Memoization:**
+    - `katas/advanced/04-pragma-memo/` — pragma memo + manual memoization via state-threaded map
+    - Also mentioned in tooling/tabling
+    - Coverage: Good.
 
-Now let me evaluate against the key areas:
+15. **Abstract types / information hiding:**
+    - `katas/type-system/03-abstract-types/`
+    - `katas/advanced/06-abstract-module/`
+    - Coverage: Good — covered from two angles (type system and module system).
 
-**1. Determinism (all 6 categories)**
-- Covered: det, semidet, multi, nondet, erroneous(?), failure(?)
-- The determinism track has 6 exercises (01-six-categories, 02-committed-choice, 03-scope-annotations, plus 04-06)
-- 06-determinism-and-negation covers \+ and semidet
-- The six categories are: det, semidet, multi, nondet, erroneous, failure
-- I need to check if erroneous and failure are covered. The 01-six-categories claims "one predicate per determinism class" so it likely covers all six. But the track only has 6 exercises total, and 02/03/06 focus on committed choice, scope annotations, and negation. Do exercises 04-05 cover erroneous and failure?
-- From the determinism track listing: 01-six-categories, 02-committed-choice, 03-scope-annotations, then presumably 04, 05, 06. We know 06 is determinism-and-negation. So 04 and 05 might cover erroneous/failure or other determinism topics.
+**DEPTH ANALYSIS:**
 
-**2. Mode system (insts, multi-mode, uniqueness)**
-- Well covered: 7 exercises in mode-system track
-- insts-and-modes, multi-mode, uniqueness-deep, higher-order-insts, mode-specific-clauses
-- Plus foundations/09-mode-inference covers basics
+The curriculum starts with foundations (reactivation, modules, maybe, string, HO, map, set, exceptions, built-in types, mode inference) — solid beginner-to-intermediate.
 
-**3. Type system (ADTs, parametric polymorphism, typeclasses, existential types, phantom types)**
-- Well covered: 5+ exercises in type-system track
-- discriminated-unions, parametric-polymorphism, abstract-types, type-classes, existential-types, phantom-types (09)
+Mode system track goes deep: insts → multi-mode → uniqueness (di/uo) → higher-order insts → mode-specific clauses → array threading. This is genuinely advanced material.
 
-**4. Higher-order predicates (inst annotations, partial application)**
-- Covered in foundations/04-higher-order and mode-system/04-higher-order-insts
+Determinism track covers all 6 categories plus committed choice, scope annotations, and promise_equivalent_solutions. Good depth.
 
-**5. DCG parsing**
-- Covered in parsing track: 9 exercises
-- dcg-basics, dcg-goals, parsing-utils, dcg-determinism, packrat
+Concurrency track is thorough: parallel conjunction → threads → concurrent IO → granularity → deadlock → parallel map → uniqueness with threads → deterministic parallelism → STM. This is one of the strongest tracks.
 
-**6. Concurrency (parallel conjunction, channels, unique state)**
-- Covered: 8 exercises in concurrency track
-- parallel-conjunction, threads, uniqueness-and-threads
+Type system covers ADTs, parametric polymorphism, abstract types, typeclasses, existential types. Good but 5 of 10 katas are documented — hard to assess full depth.
 
-**7. Meta-programming**
-- Covered in puzzles/advanced/07-mercury-in-mercury (meta-interpreter)
-- Also RTTI in advanced/03-rtti
+Parsing covers DCG basics, DCG goals, parsing utils. 3 of 9 documented — the undocumented ones might push into advanced territory.
 
-**8. FFI**
-- Covered in advanced/01-ffi-depth
+Advanced track covers FFI, solver types, RTTI, memoization, assoc-list envs, abstract modules, FFI pragma attrs. This is genuinely advanced.
 
-**9. Standard library (list, map, set, string, io)**
-- list: Used throughout (foundations/04-higher-order)
-- map: foundations/05-map
-- set: foundations/06-set
-- string: foundations/03-string
-- io: Used throughout, exceptions in foundations/07-exceptions
+Puzzles section mentions: Sudoku, N-queens, crypto-arithmetic, anagram finder, expression evaluator, graph reachability, frequency histogram, calculator, CSV reader, config parser, parallel sort, pipeline, pipeline with unique state, generic printer, memoized search, bidirectional search, combinator library, generic parser, plugin architecture, Mercury meta-interpreter. This is a strong set of advanced exercises.
 
-**Now for gaps:**
+Bridges provide integration exercises combining multiple concepts.
 
-1. **Solver types** — advanced/02-solver-types is a "reference kata" with no working build. This is a significant Mercury feature that's essentially not taught.
+**Does it plateau at intermediate?**
+No — the advanced track, STM, uniqueness, solver types, FFI, meta-interpreter puzzle, and bridges push well into advanced territory. The curriculum goes from "finished the tutorial" to genuinely advanced Mercury.
 
-2. **Software transactional memory (STM)** — Not covered at all. Mercury has `stm` module for composable memory transactions.
+**SEQUENCING ANALYSIS:**
 
-3. **Foreign_enum / C interop beyond basic FFI** — The FFI kata covers the four pragmas but doesn't go deep into foreign_enum, foreign_struct, etc.
+- Foundations first ✓ (modules, maybe, string, HO, data structures, exceptions, mode inference)
+- Type system after foundations ✓ (builds on basics)
+- Mode system after type system ✓ (modes are harder, need type system fluency)
+- Determinism after mode system ✓ (closely related, modes are prerequisite)
+- Parsing after determinism ✓ (DCGs use modes extensively)
+- Tooling can go anywhere ✓ (practical skills)
+- Concurrency after modes/determinism ✓ (needs mode fluency, unique modes)
+- Advanced after all tracks ✓ (FFI, solver types, RTTI are expert-level)
+- Bridges placed between tracks as integration exercises ✓
 
-4. **Ground terms / `ground` inst** — Not explicitly covered.
+The recommended order in README.md: Foundations → Type system → Mode system → Determinism → Parsing → Tooling/Concurrency/Advanced. This is sensible.
 
-5. **`with_type` / type inference annotations** — Not covered.
+Potential issue: Bridge 05 (mode-reversal) requires mode system knowledge but is listed after parsing. The recommended order puts bridges 04-06 after mode system and determinism, which makes sense.
 
-6. **Module system depth** — foundations/01-modules covers basics, but advanced module system features (abstract exports, sharing constraints, recursive modules) are not covered.
+Bridge 11 (error-handling) lists prerequisites as `foundations/02-maybe` and `foundations/07-io-error-handling`. ✓
 
-7. **Term unification details** — The meta-interpreter puzzle covers unification from scratch, but the standard Mercury unification algorithm and its interaction with modes is not explicitly taught.
+Koan `advanced/07-solver-any-inst` lists prerequisites of `advanced/02-solver-types` and `advanced/01-ffi-depth`. ✓
 
-8. **`promise_pure` / purity** — Mentioned in FFI but not as a standalone concept.
+**GAPS ANALYSIS:**
 
-9. **Nested DCG / DCG with accumulators** — Not explicitly covered.
+1. **Partial application / currying**: Mercury supports partial application of higher-order predicates (e.g., `list.map(f)` where f is a partially applied predicate). This is not explicitly covered anywhere. It's an important practical idiom.
 
-10. **Testing and property-based testing** — Not covered.
+2. **Phantom types**: Not explicitly covered. Phantom types are used in Mercury for type-safe abstractions (e.g., phantom type parameters for units of measurement, state tokens). This is a niche but powerful technique.
 
-11. **The `solutions/2` and `solutions_set/2` predicates** — Used in a few places but not systematically taught.
+3. **Type class instances with functional dependencies**: Type classes are covered but functional dependencies (which are important for type-level computation and multi-parameter type classes) are not explicitly addressed.
 
-12. **`cc_nondet`** — Mentioned in determinism/02 but not given its own exercise.
+4. **Module system depth**: `import_module` vs `use_module` is mentioned in abstract module kata, but the broader module system (nested modules, module qualifiers, interface files generation) could be deeper.
 
-13. **`require_det` and other scope annotations in depth** — Mentioned in 03-scope-annotations but potentially thin.
+5. **Termination and productivity**: Mercury has termination checking. This is not covered as a concept.
 
-14. **Bitwise operations, float operations** — Minimal coverage.
+6. **Solver types / CLP**: The coverage is explicitly acknowledged as incomplete — there's no working constraint engine. The kata is a reference with pseudocode. This is the most notable gap, but it's honestly documented as a known limitation with a concrete plan to address it.
 
-15. **Error handling patterns** — io.res is covered in foundations/07, but Result types and comprehensive error handling patterns are thin.
+7. **Groundness and aliasing**: While uniqueness is covered, the interaction between groundness testing (`ground/1`) and aliasing patterns could be deeper.
 
-16. **`inst` names and `any` inst** — Partially covered.
+8. **DCG advanced features**: Only 3 of 9 parsing katas are documented. It's unclear if the remaining 6 cover advanced DCG features like DCG threading, attribute DCGs, etc.
 
-17. **Live data structures / `unique` types beyond arrays** — Not deeply covered.
+9. **Tabling**: Mentioned in tooling (pragma memo) but Mercury's full tabling system (answer subsumption, etc.) is not deeply covered.
 
-**Sequencing issues:**
-- The parsing track jumps from 03-parsing-utils to 08-packrat (skipping 05-07). This suggests missing exercises.
-- The mode-system track lists 7 exercises but only 5 are detailed in the README.
-- Bridge 09-typeclass-refactor is listed as a prerequisite for puzzles 05-generic-parser and 06-plugin-architecture, but the bridge itself isn't detailed.
-- Some puzzles list prerequisites that reference bridges and katas not yet completed by the learner — e.g., puzzle 05-generic-parser requires bridge/09-typeclass-refactor and puzzles/advanced/04-combinator-library.
+10. **Impure features**: `impure` predicates, `semipure` — not explicitly covered. These are important for understanding the full purity spectrum.
 
-**Redundancy:**
-- The concept of "determinism categories" is touched in multiple places (determinism track, parsing/04, concurrency), which is appropriate since it's fundamental.
-- Higher-order predicates appear in both foundations/04 and mode-system/04 — but they approach from different angles (foundations = usage, mode-system = inst annotations).
-- Typeclasses are covered in type-system/04 and then used in type-system/05 and puzzles — good reinforcement.
+11. **Foreign enum / constants**: FFI covers pragmas but foreign enum declarations are not explicitly shown.
 
-**Depth assessment:**
-- The curriculum goes from basics (hello world) through intermediate (typeclasses, modes, DCG) to advanced (FFI, RTTI, meta-interpreter, plugin architecture).
-- The meta-interpreter puzzle is genuinely advanced.
-- The plugin architecture puzzle covers existential types + typeclasses in a sophisticated way.
-- The packrat parsing kata covers a topic not in the Mercury tutorial.
-- However, the "advanced" katas track only has 4 exercises, and one (solver types) has no working build.
-- The concurrency track has 8 exercises but only 2 are detailed in the README.
+12. **Aggregation / search**: While puzzles may cover this, there's no explicit track on search strategies, `promise_equivalent_solutions` for aggregation, etc. beyond what's in determinism.
 
-Let me now provide a structured review.
+**REDUNDANCY ANALYSIS:**
 
-Actually, I should note: I don't have the full contents of all files. I have a sampling of READMEs. The user said "I am not sharing the full contents of any files yet." So I need to work from what I have — the READMEs and the structure visible from those.
+1. **`promise_equivalent_clauses`** appears in both mode-system (`02-multi-mode`) and determinism (`02-committed-choice`). This is appropriate — the concept genuinely spans both concerns.
 
-Let me rate:
+2. **`promise_equivalent_solutions`** appears in determinism (`02-committed-choice`, `07-promise-equiv-solutions`) and is referenced in concurrency (`07-uniqueness-and-threads`). Again, appropriate — it's a cross-cutting concept.
 
-**Breadth: 7/10**
-- Strong coverage of core language features (modes, determinism, type system, DCG, higher-order)
-- Good coverage of advanced topics (FFI, RTTI, meta-programming, concurrency)
-- Notable gaps: solver types (non-functional), STM, comprehensive error handling, property-based testing, module system depth
+3. **`version_array`** appears in both mode-system (`03-uniqueness-deep`, `08-array-threading`) and concurrency (`07-uniqueness-and-threads`). This is appropriate — it's the key data structure for both uniqueness and concurrency.
 
-**Depth: 7/10**
-- Goes beyond tutorial level in many areas
-- Genuine advanced material (meta-interpreter, plugin architecture, packrat parsing)
-- But the advanced katas track is thin (4 exercises, one broken)
-- Some tracks may plateau at intermediate-advanced
+4. **`maybe(T)`** appears in foundations (`02-maybe`) and bridge 11 (error-handling). The bridge extends the foundations concept. Appropriate — not redundant, it builds on it.
 
-Let me write this up properly.
+5. **Higher-order predicates** appear in foundations (`04-higher-order`), mode-system (`04-higher-order-insts`), and advanced (`05-assoc-list-env`). Each adds a layer. Not redundant — progressive deepening.
 
+6. I don't see significant over-coverage of any concept relative to its importance. The curriculum seems well-balanced.
+
+**RATINGS:**
+
+Breadth: The curriculum covers most major Mercury concepts well. Notable absences are partial application, phantom types, functional dependencies, termination/productivity, impure features, and a working CLP engine. But the core post-tutorial topics are well-represented.
+
+I'd rate breadth at **7.5/10** — strong coverage of core concepts, with some notable absences in advanced type system features and a few practical idioms.
+
+Depth: The curriculum goes from intermediate to genuinely advanced. Mode system, concurrency, and advanced tracks are particularly deep. The solver types coverage is acknowledged as incomplete. Parsing depth is hard to assess with only 3/9 katas documented.
+
+I'd rate depth at **7.5/10** — goes well beyond tutorial level in many areas, but solver types are thin by necessity, and some advanced topics are missing.
+
+Let me now compose a thorough, specific review.
 
 </thinking-content-7bbeb8e1441453ad999a0bbba8a46d4b>
 
-## Cinnabar Curriculum Review: Coverage Analysis
+## Cinnabar Curriculum Review: Coverage
 
-### Survey Method
+### 1. BREADTH — What's Covered
 
-I examined the top-level README, all eight kata-track READMEs, the 10 bridge descriptions, the puzzle index, and detailed exercise READMEs for: foundations/04 (higher-order), type-system/05 (existential types), type-system/09 (phantom types), determinism/02 (committed choice), determinism/06 (negation), mode-system/02 (multi-mode), mode-system/03 (uniqueness), parsing/04 (DCG determinism), parsing/08 (packrat), advanced/03 (RTTI), concurrency/07 (uniqueness and threads), and advanced/01 (FFI depth). I also read the puzzle descriptions for generic-parser, plugin-architecture, and meta-interpreter.
+**Strong coverage (well-documented, multi-exercise tracks):**
 
----
-
-### 1. BREADTH — What's Covered vs. What's Missing
-
-**Rating: 7 / 10**
-
-#### Well-Covered Areas
-
-| Concept Area | Exercises | Notes |
+| Concept | Track/Exercises | Assessment |
 |---|---|---|
-| **Determinism (6 categories)** | `determinism/01` through `06` | All six categories addressed; committed-choice, scope annotations, and negation each get dedicated exercises |
-| **Mode system** | `mode-system/01–07` (7 exercises) | Insts, multi-mode, uniqueness/di-uo, higher-order insts, mode-specific clauses; plus `foundations/09` for basics |
-| **Type system** | `type-system/01–09` (5+ exercises) | ADTs, parametric polymorphism, abstract types, typeclasses, existential types, phantom types |
-| **Higher-order predicates** | `foundations/04`, `mode-system/04` | Usage patterns + inst annotations on stored predicates; `call/N` covered |
-| **DCG parsing** | `parsing/01–08+` (9 exercises) | Basics, semantic actions, parsing_utils, determinism in DCGs, packrat memoization |
-| **Concurrency** | `concurrency/01–08` (8 exercises) | Parallel conjunction, threads/channels, uniqueness across thread boundaries |
-| **FFI** | `advanced/01` | All four pragma types with attributes (`will_not_call_mercury`, `thread_safe`, `tabled_for_io`) |
-| **RTTI / meta-programming** | `advanced/03`, puzzle `07` | `deconstruct/5`, generic pretty-printer, full meta-interpreter with unification and backtracking |
-| **Standard library idioms** | `foundations/02–08` | `maybe`, `string`, `map`, `set`, `io.res`, exceptions, built-in type corners |
+| **Determinism (all 6 categories)** | `katas/determinism/` — 7 katas | All categories addressed: det, semidet, multi, nondet, erroneous, failure. Committed choice, scope annotations, and `promise_equivalent_solutions` both forms. **Strong.** |
+| **Mode system** | `katas/mode-system/` — 8 katas | Insts, user-defined insts, `bound(...)` patterns, parametric insts, multi-mode clauses, `promise_equivalent_clauses`, uniqueness (`di`/`uo`), higher-order inst annotations, array threading. **Excellent.** |
+| **Concurrency** | `katas/concurrency/` — 9 katas | Parallel conjunction (`&`), threads + channels, concurrent IO, granularity, deadlock, parallel map, unique state across threads, deterministic parallelism, STM with `retry`/`or_else`. **Excellent — one of the strongest tracks.** |
+| **Type system** | `katas/type-system/` — 10 katas | Discriminated unions (recursive ADTs, semidet constructors), parametric polymorphism, abstract types, typeclasses, existential types. 5 of 10 documented; remaining 5 undocumented so depth unclear. **Good from what's visible.** |
+| **Standard library** | `katas/foundations/` | `maybe(T)`, `string`, higher-order list operations (`map`/`filter`/`foldl2`), `map(K,V)`, `set(T)`, `io.res`, `exception.catch_any`, built-in types (`//` vs `rem`, float, char). **Good.** |
+| **FFI** | `katas/advanced/01`, `07` + `CLP-PLAN.md` | All four FFI pragmas (`foreign_decl`, `foreign_type`, `foreign_proc`, `foreign_export`), plus `will_not_call_mercury`, `promise_pure`, `thread_safe` attributes. **Good.** |
+| **Error handling** | `bridge/11` | `maybe(T)` chaining, custom error types (`validation_result`), `io.res` for file loading — with clear guidance on when each is appropriate. **Excellent.** |
+| **Property-based testing** | `katas/tooling/06` | Full pattern: bounded generators, semidet properties, `solutions/2` runner, counterexample reporting. **Good and practical.** |
+| **Tooling ecosystem** | `katas/tooling/` — 6 katas | Grades, `mdb` debugging, profiling, `pragma memo`/tabling, assertion testing, property testing. **Good.** |
+| **Parsing (DCG)** | `katas/parsing/` — 9 katas | DCG syntax, `{Goal}` semantic actions, `parsing_utils` combinators. 3 of 9 documented; remaining 6 undocumented. **Foundation is solid; advanced depth unclear.** |
 
-#### Notable Gaps
+**Partial coverage (present but thin):**
 
-| Missing Concept | Impact |
+| Concept | Where | Assessment |
+|---|---|---|
+| **Solver types / CLP** | `katas/advanced/02` (reference kata), `koans/advanced/07`, `CLP-PLAN.md` | Explicitly acknowledged as incomplete — no working constraint engine. The kata is pseudocode with honest explanation of what's missing. `CLP-PLAN.md` outlines a concrete Rust FFI plan. **Thin by necessity, but honestly documented.** |
+| **Meta-programming** | Advanced puzzle (meta-interpreter), `advanced/05-assoc-list-env` | Mentioned as a single puzzle, not a track. The assoc-list env kata hints at the idiom. **Thin — only a taste.** |
+| **Memoization** | `katas/advanced/04`, `katas/tooling/04` | `pragma memo` + manual state-threaded map. **Adequate.** |
+| **Abstract types / modules** | `katas/type-system/03`, `katas/advanced/06` | Covered from two angles (type opacity and module abstraction). **Good.** |
+
+**Absent or not visible:**
+
+| Concept | Status |
 |---|---|
-| **Solver types** | `advanced/02` is listed as a "reference kata" with no working build. Solver types are a distinctive Mercury feature — this is effectively absent from the curriculum. |
-| **Software Transactional Memory (STM)** | No coverage at all. `stm` module and `atomic/2` are important for concurrent state beyond the mutex/mvar patterns in concurrency/07. |
-| **Comprehensive error-handling patterns** | `foundations/07` covers `io.res` and `exception.catch_any`, but there's no exercise on designing with `maybe(T)` vs `io.res` vs Result types as an error-handling strategy. The `01-maybe-extend` bridge touches this lightly. |
-| **Module system depth** | `foundations/01` covers basics (interface/implementation, import vs use), but advanced module features — abstract exports, sharing constraints, functor-based parametric modules — are absent. |
-| **Property-based testing** | No coverage. Mercury's `test` framework with QuickCheck-style properties is not addressed. |
-| **Groundness and `ground` inst** | Not explicitly taught. Relevant for understanding why some mode errors occur. |
-| **Nested DCG / accumulator-passing DCG** | Parsing covers basic DCG and packrat, but not the pattern of threading accumulators through DCG rules for complex parsing tasks. |
-| **`foreign_enum`, `foreign_struct`** | FFI kata covers the four pragma types but doesn't go into enum/struct interop details. |
-
-#### Thin Coverage
-
-- **`cc_nondet`**: Mentioned in `determinism/02` alongside `cc_multi` but doesn't get its own exercise. The distinction between `cc_nondet` and `semidet` (both are "one solution, but different reasons") is listed as a checkpoint question but not drilled.
-- **`require_det` / scope annotations**: `determinism/03` covers these, but only one exercise. Given how confusing scope annotations are for newcomers, this could be deeper.
-- **`version_array`**: Appears in `mode-system/03` and `concurrency/07` but only as a contrast to `array`. The persistent data structure pattern deserves more exploration.
+| **Partial application / currying** | Not covered anywhere. Mercury's partial application of higher-order predicates (e.g., `list.map(f)`) is an important practical idiom not addressed. |
+| **Phantom types** | Not mentioned. Phantom type parameters for type-safe abstractions (units, state tokens) are a powerful Mercury idiom. |
+| **Functional dependencies** | Type classes are covered but multi-parameter type classes with fundeps are not. |
+| **Termination / productivity checking** | Not covered as a concept. |
+| **`impure` / `semipure` predicates** | The full purity spectrum is not explicitly taught. |
+| **Foreign enum / constant declarations** | FFI pragmas are covered but `foreign_enum` is absent. |
+| **Aggregation patterns** | Beyond `promise_equivalent_solutions`, there's no explicit track on search/aggregation idioms. |
 
 ---
 
-### 2. DEPTH — Does the Curriculum Scale?
+### 2. DEPTH — Does the Curriculum Push Into Advanced Mercury?
 
-**Rating: 7 / 10**
+The curriculum does **not** plateau at intermediate. The progression is clear:
 
-The curriculum has genuine depth in several areas:
+- **Foundations** (intermediate): modules, basic types, stdlib usage, mode inference
+- **Mode system** (advanced): inst reasoning, uniqueness, `di`/`uo` threading, HO inst annotations
+- **Determinism** (advanced): all 6 categories, committed choice, scope annotations
+- **Concurrency** (advanced): STM, unique state across threads, granularity analysis, deadlock
+- **Advanced track** (expert-level): FFI depth, solver types, RTTI, memoization patterns, abstract modules
+- **Bridges** (integration): each combines multiple tracks into a cohesive exercise
+- **Puzzles** (open-ended): meta-interpreter, plugin architecture, bidirectional search, combinator library
 
-- **The meta-interpreter puzzle** (`puzzles/advanced/07`) is excellent — implementing unification, resolution, and `solutions/2` from scratch forces deep understanding of mechanisms the compiler normally hides.
-- **The plugin architecture puzzle** (`puzzles/advanced/06`) combines existential types, typeclass-constrained existentials, and heterogeneous collections in a non-trivial way.
-- **Packrat parsing** (`parsing/08`) goes beyond the tutorial with a topic (tabling incompatibility with parallel grade) that many Mercury programmers don't know.
-- **The determinism track** builds a proper lattice understanding: six categories → committed choice → scope annotations → negation semantics.
+The mode system and concurrency tracks are particularly deep — they don't just teach the concepts, they force the learner to internalize them through repetition. The STM kata is one of the best single exercises in the repository, building from `deposit`/`withdraw` through `retry`/`or_else` in small steps.
 
-However, the curriculum **plateaus in the advanced katas track**:
-- Only 4 exercises, one of which (`solver-types`) has no working build.
-- The FFI kata is well-constructed but isolated — it doesn't connect to a larger systems-programming narrative.
-- There's no exercise that combines multiple advanced features (e.g., FFI + concurrency, or typeclasses + meta-programming).
-- The highest-level puzzles (generic parser, plugin architecture) are excellent but there are only two of them in the "advanced" puzzle category.
-
-**The mode system track** also shows a depth gap: exercises 04–07 exist in the index but their READMEs weren't available for review. If they cover topics like inst inference for polymorphic higher-order predicates or mode-directed compilation, the depth improves significantly.
+**Depth rating: 7.5/10** — Goes well beyond tutorial level. The main limitation is solver types (acknowledged gap). Parsing depth is hard to evaluate with 6/9 katas undocumented.
 
 ---
 
 ### 3. SEQUENCING — Is the Order Right?
 
-**Rating: 8 / 10**
+The recommended order from `README.md` is:
 
-The overall sequencing is well-designed:
+> Foundations → Type system → Mode system → Determinism → Parsing → Tooling, Concurrency, Advanced (any order)
 
-- **Foundations → Type system → Mode system → Determinism → Parsing** is the recommended order, and it makes sense. You need modules and maybe-types before you can understand typeclasses; you need modes before determinism makes sense; you need all of it before DCG parsing.
-- **Bridges are positioned well**: 01–03 after Foundations, 04–06 after Mode system/Determinism, 07–10 after Parsing and Advanced.
-- **The `foundations/09-mode-inference` placement** is smart — it's a mode-system concept but placed at the end of Foundations as a bridge to the Mode system track.
+This is **correct and well-reasoned**:
 
-**Potential sequencing issues:**
+- Foundations before everything else ✓
+- Type system before mode system ✓ (you need to understand types to reason about insts)
+- Mode system before determinism ✓ (modes and determinism are deeply intertwined)
+- Mode system before concurrency ✓ (unique modes, `di`/`uo` threading are prerequisites for STM and thread safety)
+- Determinism before parsing ✓ (DCGs interact with mode/determinism checking)
+- Advanced last ✓ (FFI, solver types, RTTI require fluency in everything else)
 
-1. **`type-system/04-type-classes`** requires understanding of parametric polymorphism (`02`) and abstract types (`03`), but the ordering is correct. However, `05-existential-types` says "read 04-type-classes first" — good, but existential types also depend on understanding `type-system/03-abstract-types` for the "why" of opaque wrapping. The dependency is implicit rather than stated.
+**Cross-reference integrity is good:**
+- Bridge 11 lists `foundations/02-maybe` and `foundations/07-io-error-handling` as prerequisites ✓
+- Koan `advanced/07-solver-any-inst` lists `advanced/02-solver-types` and `advanced/01-ffi-depth` ✓
+- Determinism `07-promise-equiv-solutions` lists concurrency and mode-system prerequisites ✓
 
-2. **Puzzle prerequisites form long chains**: `puzzles/advanced/05-generic-parser` requires `katas/typeclasses/01`, `katas/typeclasses/02`, `bridge/09`, and `puzzles/advanced/04-combinator-library`. That's four prerequisites, two from different tracks. A learner who finished the type-system track but skipped the combinator-library puzzle can't attempt the generic parser. This is correct but could frustrate.
-
-3. **The parsing track has a numbering gap**: exercises jump from `03-parsing-utils` to `08-packrat`. Exercises 05–07 presumably exist (the track lists 9 total) but their READMEs weren't available. If a learner encounters this gap, it's confusing.
-
-4. **`concurrency/01-parallel-conjunction`** requires `.par` grade, which is set as the default in `flake.nix`. But `concurrency/02-threads` also requires `.par`, and the concurrency README states "Both require the `.par` grade." There's no exercise explaining *what grades are* before throwing learners into grade-dependent code. The `tooling/01-grades` kata exists but is in a separate track. A concurrency-first learner might hit grade confusion.
+**One minor concern:** Bridge 05 (mode-reversal) sits between bridges 04 (determinism-ratchet) and 06 (pipeline-parameterization), which is correct thematically, but a learner who hasn't completed the full mode system track might struggle. The recommended order says "Bridges 04–06 after Mode system and Determinism," which is the right call.
 
 ---
 
 ### 4. GAPS — The Most Notable Absence
 
-**The single most important missing concept: Software Transactional Memory (STM).**
+**The single most notable gap is partial application and currying of higher-order predicates.**
 
-Mercury's STM system (`stm` module, `atomic/2`, `transaction/2`) is the primary mechanism for safe concurrent state mutation beyond mutex-based patterns. The curriculum covers:
-- `array` vs `version_array` (mode-system/03)
-- `mvar` + semaphore mutex (concurrency/07)
-- But never `stm`
+Mercury supports partial application in a way that is central to idiomatic code:
 
-A learner who finishes the concurrency track knows how to *avoid* shared mutable state (version_array) and how to *protect* it (mutex), but never learns Mercury's composable transaction system. This is the approach Mercury itself recommends for most concurrent state problems.
+```mercury
+% Partial application of a predicate
+Doubler = list.map(func(X) = Y :- Y = X * 2),
+% Or using a named predicate
+Doubled = list.map(double, List)
+```
 
-**Second most notable gap: the solver types hole.**
+This interacts with mode annotations in non-obvious ways (the mode of a partially applied predicate must be compatible with how it's eventually called). Every real Mercury codebase uses this pattern constantly, and the curriculum doesn't explicitly teach it.
 
-Solver types are one of Mercury's most unique features — they're what makes Mercury a *constraint logic programming* language rather than just a logic language. The fact that `advanced/02` is a broken reference kata means learners get no guided exposure to `solver type` declarations, `any` inst, or the `.tr` grade.
+**Second most notable gap: the solver type / CLP story is incomplete.** This is honestly documented as a known limitation, and `CLP-PLAN.md` provides a concrete roadmap. But a post-tutorial learner who wants to do constraint logic programming in Mercury will hit a wall. The koan (`advanced/07`) teaches the mode-checking side of `any` inst, but there's no way to actually build and run a CLP program.
 
-**Third gap: no synthesis/capstone exercise.**
-
-There's no exercise that requires combining features across tracks (e.g., "build a concurrent parser that uses typeclasses for extensible token streams and existential types for plugin-based output formatting"). The puzzles come closest, but they're siloed by topic.
-
----
-
-### 5. REDUNDANCY — Over-Covered Areas
-
-**Rating: Low redundancy overall — 3 / 10**
-
-The curriculum is lean. The few areas of overlap are justified:
-
-- **Determinism concepts appear in multiple tracks** (determinism track, parsing/04, mode-system exercises). This is appropriate — determinism is so fundamental that reinforcement helps.
-- **Higher-order predicates** appear in both `foundations/04` (usage) and `mode-system/04` (inst annotations). These approach genuinely different skills and aren't redundant.
-- **`version_array`** appears in both `mode-system/03` and `concurrency/07`, but from different angles (uniqueness model vs. thread safety).
-
-The only arguably redundant element is the **`promise_equivalent_clauses` pragma**, which appears in `mode-system/02` and is referenced in `mode-system/05` and `determinism/02`. Given how confusing this pragma is, the repetition is probably helpful rather than wasteful.
+**Third gap: impure/semipure predicates.** The purity spectrum (`det`/`semidet`/`multi`/`nondet` is one axis; `pure`/`semipure`/`impure` is another) is not explicitly taught. Learners will encounter `impure` in real code and in compiler errors without understanding the design rationale.
 
 ---
 
-### Summary Table
+### 5. REDUNDANCY — Over-Covered Concepts
 
-| Area | Breadth Coverage | Depth | Notes |
-|---|---|---|---|
-| Determinism (6 cats) | ★★★★★ | ★★★★ | Committed choice and scope annotations well-covered |
-| Mode system | ★★★★★ | ★★★★ | Insts, multi-mode, uniqueness all solid |
-| Type system (ADTs → phantom) | ★★★★★ | ★★★★ | Existential + phantom types go beyond tutorial |
-| Higher-order predicates | ★★★★ | ★★★★ | inst annotations well-taught |
-| DCG parsing | ★★★★ | ★★★★ | Packrat is a standout |
-| Concurrency | ★★★★ | ★★★ | STM absence hurts depth |
-| FFI | ★★★ | ★★★ | Solid but isolated |
-| RTTI / meta-prog | ★★★ | ★★★★ | Meta-interpreter is excellent |
-| Standard library | ★★★★ | ★★★ | Good idioms, thin on error handling |
-| Advanced features (solver types, STM) | ★ | ★ | Effectively absent |
+**There is no significant redundancy.** The curriculum is lean. Cross-cutting concepts like `promise_equivalent_solutions`, `version_array`, and `promise_equivalent_clauses` appear in multiple tracks, but each appearance adds a new layer of context rather than repeating the same material:
 
-**Overall breadth: 7/10** — Covers the core language thoroughly but misses solver types, STM, and several secondary features.
+- `promise_equivalent_clauses` in mode-system → `promise_equivalent_solutions` in determinism → `[!:IO]` form in concurrency: progressive deepening, not repetition.
+- `version_array` in mode-system/uniqueness → in concurrency/unique-state: same data structure, different problem domain.
+- `maybe(T)` in foundations → in bridge 11: builds on the foundation with validation patterns.
 
-**Overall depth: 7/10** — Reaches genuinely advanced territory in spots (meta-interpreter, plugin architecture, packrat) but the advanced katas track is underweight and there's no capstone synthesis.
+No concept is drilled past the point of diminishing returns.
 
-> Tokens: 18k sent, 5.8k received. Cost: $0.0050 message, $0.0050 session.  
+---
+
+### Summary Ratings
+
+| Dimension | Score | Rationale |
+|---|---|---|
+| **Breadth** | **7.5 / 10** | Covers all major post-tutorial topics except partial application, phantom types, fundeps, impure predicates, and termination checking. Solver types are present but non-functional. |
+| **Depth** | **7.5 / 10** | Genuinely advanced in modes, determinism, and concurrency. Solver types are thin (acknowledged). Parsing advanced features undocumented. Meta-programming is a single puzzle. |
+| **Sequencing** | **9 / 10** | Logical, well-documented prerequisites, no forward-reference issues detected. |
+| **Gaps** | Most notable: **partial application/currying** and **impure predicates**. Solver types are a known, honestly-documented gap. |
+| **Redundancy** | **Low** — No concepts are meaningfully over-covered. Cross-track appearances are additive. |
+
+> Tokens: 12k sent, 5.8k received. Cost: $0.0045 message, $0.0045 session.  

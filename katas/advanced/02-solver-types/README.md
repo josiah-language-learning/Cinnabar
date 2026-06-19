@@ -1,72 +1,91 @@
-# 02 — Solver types: reference kata
+# 02 — Solver types
 
-**Reference only — no working build expected.** Solver types require an external CLP engine
-not bundled with Mercury. This kata explains the concept and gives you the vocabulary to
-work with external resources.
+Solver types are Mercury's hook for constraint logic programming (CLP). The
+language machinery — the `solver type` declaration, the `any` inst, the
+trailing grade — is all specified and enforced by the compiler. A working
+constraint engine to sit behind it is a separate matter.
 
 ---
 
-## What are solver types?
+## What the language provides
 
-Mercury's type system includes a hook for *constraint logic programming* (CLP): the ability
-to work with partially-known values that satisfy constraints, rather than fully-instantiated
-values.
+### The `solver type` declaration
 
-A solver type is declared with `:- solver type`. The `any` inst represents "constrained but
-not fully determined."
+A solver type separates the *declaration* (interface section) from the
+*definition* (implementation section):
 
 ```mercury
-:- solver type clp_int
+% Interface section — public name only:
+:- solver type token_var.
+
+% Implementation section — representation and inst mapping:
+:- solver type token_var
     where
         representation is int,
         ground is ground,
-        any is any,
-        constraint_store is clpfd_store.
+        any is any.
 ```
 
-The `any` inst allows a variable to be in the constraint store — it has a "known to satisfy
-constraints" status, not fully ground.
+The `representation is int` tells the compiler how to store the value at
+runtime. `ground is ground` and `any is any` map Mercury's inst names to
+the type's instantiatedness states.
 
----
+### The `any` inst
 
-## The `any` inst
+Normal Mercury variables have two states: `free` (unbound) or `ground` (fully
+instantiated). Solver types add a third:
 
-Normal Mercury: a variable is either `free` (unbound) or `ground` (fully instantiated).
+```
+free    — unbound
+any     — constrained but not yet determined (in the constraint store)
+ground  — fully instantiated
+```
 
-With solver types: a variable can also be `any` — in the constraint store with some
-constraints applied, but not yet uniquely determined. Goals that work with `any` values
-can propagate constraints without knowing the final value.
+Predicates that produce or consume solver variables must annotate arguments
+with `(any)`:
 
 ```mercury
-:- mode (in(any), in(any), out(any)) is det.
+:- pred make_var(token_var::out(any)) is det.
+:- pred constrain(token_var::in(any), int::in, int::in) is det.
+:- pred label(token_var::in(any), int::out) is det.
 ```
+
+Plain `::in` is shorthand for `::in(ground)`. The mode checker enforces
+`any` vs `ground` **statically** — passing an `any` variable where `ground`
+is expected is a compile-time mode error, not a runtime failure.
+
+### The `.tr` trailing grade
+
+Solver types that need correct backtracking into the constraint store require
+the trailing grade (`asm_fast.gc.tr`). When a branch fails, the runtime walks
+a trail of constraint-store modifications and reverses them. Without trailing,
+solver type variables cannot roll back on backtracking.
+
+The trailing grade is available in the Mercury install used by this project
+(`asm_fast.gc.tr` is in `lib/mercury/ints/`), but the cinnabar dev shell
+defaults to the parallel grade (`asm_fast.par.gc.stseg`). CLP experiments
+require compiling with `--grade asm_fast.gc.tr`.
 
 ---
 
-## The `.tr` grade
+## What is missing: the constraint engine
 
-The *trailing* grade (`.tr`) enables Mercury's undo mechanism — when a branch fails, the
-runtime undoes all constraint store modifications made in that branch. Without trailing,
-solver types cannot roll back constraint store updates on backtracking.
+Mercury's stdlib provides only the type-system hook and trailing machinery.
+There is no bundled CLP(FD) engine and no maintained third-party CLP library
+for Mercury 22. The predicates that would do domain propagation, arc
+consistency, and labeling do not exist yet.
 
-```
-hlc.gc.tr
-asm_fast.gc.tr
-```
+A constraint engine would provide:
 
----
-
-## What a CLP(FD) integration looks like
-
-A typical CLP(FD) library for Mercury would provide:
 ```mercury
-:- pred (#=)(clp_int::in(any), clp_int::in(any)) is det.
-:- pred (#<)(clp_int::in(any), clp_int::in(any)) is semidet.
-:- pred domain(clp_int::in(any), int::in, int::in) is det.
-:- pred labeling(list(clp_int)::in(list_skel(any)), list(int)::out) is nondet.
+:- pred domain(token_var::in(any), int::in, int::in) is det.
+:- pred (#=)(token_var::in(any), token_var::in(any)) is det.
+:- pred (#\=)(token_var::in(any), token_var::in(any)) is semidet.
+:- pred labeling(list(token_var)::in(list_skel(any)), list(int)::out) is nondet.
 ```
 
-The send-more-money problem would look like:
+With those predicates, SEND+MORE=MONEY would look like:
+
 ```mercury
 solve(S, E, N, D, M, O, R, Y) :-
     domain([S, E, N, D, M, O, R, Y], 0, 9),
@@ -76,18 +95,54 @@ solve(S, E, N, D, M, O, R, Y) :-
     labeling([S, E, N, D, M, O, R, Y]).
 ```
 
----
-
-## External resources
-
-- Mercury standard library: `library/solver_builtin.m` — the hook definitions
-- MercuryCLP: search for Mercury CLP bindings on GitHub (availability varies)
-- SWI-Prolog CLP(FD) documentation is conceptually equivalent and widely available
+See `CLP-PLAN.md` for the plan to build a Rust-backed CLP(FD) engine via FFI.
 
 ---
 
-## What this unlocks
+## Tasks
 
-Understanding solver types explains why Mercury's mode system has the `any` inst — it is
-not a general "unknown" but specifically the "constrained but not determined" state for CLP.
-This clarifies several mode system design choices that otherwise seem arbitrary.
+**Task 1 — Mode annotation exercise:**
+
+The koan at `koans/advanced/07-solver-any-inst` shows the mode error that
+fires when you call a predicate with plain `::in` using an `any`-inst
+variable. Work through that koan before continuing here.
+
+**Task 2 — Declare your own solver type:**
+
+Declare a `pixel_var` solver type with `representation is int`. Write:
+- `make_pixel_var(pixel_var::out(any)) is det` via a `foreign_proc` that
+  sets the representation to 0
+- `read_pixel(pixel_var::in(any), int::out) is det` via a `foreign_proc`
+  that reads the representation value
+
+Compile and run. Observe that the mode checker enforces `any` throughout.
+
+**Task 3 — Purity and if-then-else:**
+
+Add this to `main`:
+
+```mercury
+make_pixel_var(P),
+( read_pixel(P, V), V > 127 ->
+    io.write_string("bright\n", !IO)
+;
+    io.write_string("dark\n", !IO)
+)
+```
+
+Compile. Read the purity error Mercury produces. Wrap the if-then-else in
+`promise_pure(...)` to fix it. Understand why: testing an `any` variable in
+a condition has purity implications that Mercury requires you to acknowledge.
+
+**Task 4 (reading):**
+
+Read `CLP-PLAN.md`. Understand what the Rust FFI engine would need to
+provide and why the trailing grade is necessary for correct backtracking.
+
+---
+
+## External references
+
+- `library/solver_builtin.m` in Mercury source — the hook definitions
+- Mercury reference manual §9.6 — solver types and the `any` inst
+- SWI-Prolog CLP(FD) documentation — conceptually equivalent, widely available

@@ -99,6 +99,8 @@ func_semidet_koan
 nondet_cond_koan
 promise_equiv_koan
 prop_ops_koan
+int_cmp_koan
+solver_any_koan
 # Solution executables
 anagrams
 bidir
