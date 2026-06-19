@@ -101,26 +101,35 @@ Do in this order (quick wins first, then biggest gaps):
 New content that fills real holes in what the curriculum teaches. Not release blockers
 but would lift the curriculum from "solid" to "comprehensive."
 
-- [ ] **`cc_nondet` dedicated exercise** — mentioned in `determinism/02` but not drilled.
-  The distinction between `cc_nondet` and `semidet` is a consistent confusion point.
+- [x] **`cc_nondet` dedicated exercise** — `koans/determinism/06-cc-nondet-solutions`:
+  `cc_nondet` passed to `solutions/2` (inst mismatch); teaches that `cc_nondet ≠ nondet`
+  even though both produce at most one result. COMPILER-LESSONS.md updated.
 
-- [ ] **Error-handling patterns kata or bridge** — `foundations/07` covers `io.res`
-  syntax; no exercise addresses *choosing* between `maybe(T)`, `io.res`, and exceptions
-  as a design decision. Natural fit as a bridge.
+- [x] **Error-handling patterns bridge** — `bridge/11-error-handling`: starter file
+  with `maybe(T)` for optional fields; tasks add custom error type (validation with
+  reasons), then `io.res` file loading; solution README includes decision table for
+  `maybe` / custom error / `io.res` / exceptions. Starter compiles and runs clean.
 
-- [ ] **Nested / accumulator-passing DCG** — parsing covers basics and packrat but not
-  threading accumulators through DCG rules for stateful parsing.
+- [x] **Nested / accumulator-passing DCG** — katas 05 (accumulator/left-recursion) and
+  07 (stateful DCG with position/symbol table) cover the kata side. Added
+  `koans/parsing/07-stateful-branch`: mode mismatch when state variable not threaded
+  through all disjunction branches; also teaches why disjunction → if-then-else for
+  semidet DCG. COMPILER-LESSONS.md updated.
 
 - [ ] **STM coverage** — `stm` module / `atomic/2` completely absent. Concurrency kata
   or koan.
 
-- [ ] **Solver types** — `advanced/02-solver-types` is a broken reference kata. Fix it,
-  replace it, or write a working koan as a minimum.
+- [ ] **Solver types** — `advanced/02-solver-types` is a broken reference kata. Near-term
+  plan in `CLP-PLAN.md`: update kata with honest CLP situation + working `solver type`
+  declaration, add `koans/advanced/07-solver-any-inst` (mode checker enforcing `any` vs
+  `ground` without a constraint engine). Long-term: Rust CLP(FD) engine via FFI.
 
 - [ ] **Property-based testing** — no coverage. Tooling kata.
 
-- [ ] **Module system depth** — advanced module features (abstract exports, sharing
-  constraints, parametric modules) not covered. Foundations extension or advanced kata.
+- [x] **Module system depth** — `katas/advanced/06-abstract-module`: implement a `mset(T)`
+  (multiset) abstract module; exercises cover abstract type enforcement, `use_module` vs
+  `import_module` in interface sections, and swapping the implementation from `list(T)`
+  to `assoc_list(T, int)` without touching the client. Compiles clean against stubs.
 
 ---
 

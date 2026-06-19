@@ -20,7 +20,7 @@ Now you want to *think* in Mercury — to reach for modes and determinism as too
 
 ## Recommended order
 
-Foundations → Type system → Mode system → Determinism → Parsing. After those five, Tooling, Concurrency, and Advanced can be taken in any order. Puzzles work well between tracks as a change of pace — `puzzles/logic/` and `puzzles/data-structures/` pair naturally with Foundations. Bridges sit between katas and puzzles; bridge 01–03 after Foundations, bridge 04–06 after Mode system and Determinism, bridge 07–10 after Parsing and Advanced.
+Foundations → Type system → Mode system → Determinism → Parsing. After those five, Tooling, Concurrency, and Advanced can be taken in any order. Puzzles work well between tracks as a change of pace — `puzzles/logic/` and `puzzles/data-structures/` pair naturally with Foundations. Bridges sit between katas and puzzles; bridge 01–03 and 11 after Foundations, bridge 04–06 after Mode system and Determinism, bridge 07–10 after Parsing and Advanced.
 
 Start at the beginning of each track even if it feels easy. The early exercises establish habits the later ones depend on.
 
@@ -42,15 +42,15 @@ Katas and koans are organized into tracks. Puzzles draw on multiple tracks and l
 | Foundations | 12 | 12 | `katas/foundations/00-reactivation/01-hello-world` |
 | Type system | 10 | 8 | `katas/type-system/01-discriminated-unions` |
 | Mode system | 7 | 6 | `katas/mode-system/01-insts-and-modes` |
-| Determinism | 6 | 5 | `katas/determinism/01-six-categories` |
-| Parsing | 9 | 6 | `katas/parsing/01-dcg-basics` |
+| Determinism | 6 | 6 | `katas/determinism/01-six-categories` |
+| Parsing | 9 | 7 | `katas/parsing/01-dcg-basics` |
 | Tooling | 5 | 7 | `katas/tooling/01-grades` |
 | Concurrency | 8 | 5 | `katas/concurrency/01-parallel-conjunction` |
-| Advanced | 5 | 6 | `katas/advanced/01-ffi-depth` |
+| Advanced | 6 | 6 | `katas/advanced/01-ffi-depth` |
 
 ### Bridges
 
-Ten bridges in `bridge/`, each handing you a working file and asking you to extend it:
+Eleven bridges in `bridge/`, each handing you a working file and asking you to extend it:
 
 | Bridge | Concept |
 |---|---|
@@ -64,6 +64,7 @@ Ten bridges in `bridge/`, each handing you a working file and asking you to exte
 | `08-expression-language` | Recursive descent, precedence, evaluators |
 | `09-typeclass-refactor` | Extracting a numeric typeclass |
 | `10-parallel-pipeline` | Bounded channels, backpressure, supervisors |
+| `11-error-handling` | `maybe`, custom error types, `io.res`, exceptions — choosing the right mechanism |
 
 ### Puzzles
 

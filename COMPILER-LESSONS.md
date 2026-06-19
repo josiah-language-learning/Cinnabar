@@ -222,6 +222,37 @@ To demonstrate a `cc_multi` propagation error, use `thread.spawn` (which is genu
 
 ---
 
+### `cc_nondet` passed to `solutions/2` — inst mismatch
+
+**Error:**
+```
+in call to predicate `solutions.solutions'/2:
+  mode error: arguments `V_7, All' have the following insts:
+    /* unique */ (pred(out) is cc_nondet),
+    free
+  which does not match any of the modes for predicate `solutions.solutions'/2.
+  The first argument `V_7' has inst `/* unique */ (pred(out) is cc_nondet)',
+  which does not match any of those modes.
+```
+
+**Cause:** `solutions/2` is declared:
+```mercury
+:- pred solutions(pred(T)::in(pred(out) is nondet), list(T)::out) is det.
+```
+The inst annotation `pred(out) is nondet` is exact. `cc_nondet` does not satisfy it —
+committed-choice predicates and collecting-all-solutions predicates are semantically
+incompatible. A `cc_nondet` predicate has committed to the first solution; asking it to
+enumerate all solutions for `solutions/2` is a contradiction.
+
+**Fix:** Use the underlying `nondet` predicate directly with `solutions/2`. If only
+the first solution is needed, call the `cc_nondet` predicate from a `cc_multi` or `det`
+context (such as `main`) without `solutions/2`.
+
+**Also note:** `solutions/2` is in `import_module solutions`, not `import_module list`.
+Calling it without that import gives "undefined predicate `solutions'/2".
+
+---
+
 ### `parallel conjunct may fail` — `&` requires `det` sub-goals
 
 **Error:** "parallel conjunct may fail. The current implementation supports only
@@ -793,6 +824,33 @@ error: determinism declaration not satisfied.
 on a given input. Mercury cannot statically prove mutual exclusivity, so it
 infers `nondet`. To get `semidet`, collapse the alternatives into a single clause
 using if-then-else. The if-then-else commits to the first matching branch.
+
+---
+
+### Stateful DCG disjunction — variable not bound in all branches
+
+**Error:**
+```
+In clause for `item(in, out, in, out)':
+  mode mismatch in disjunction.
+  The variable `A' is ground in some branches but not others.
+    In this branch, `A' is ground.
+    In this branch, `A' is free.
+```
+
+**Cause:** A DCG rule that threads extra state (e.g., `stats(A, D)`) as arguments
+contains a disjunction where one branch updates one state component but forgets to
+bind another. Every output variable must be bound in every branch of a disjunction —
+including unchanged state that is just being passed through. A branch that silently
+drops a state variable leaves that variable free.
+
+**Fix:** Explicitly equate unchanged state variables: `{ A = A0 }`. Also switch the
+disjunction to if-then-else — a `;` disjunction infers `nondet` because Mercury cannot
+prove branches are mutually exclusive. If-then-else commits to the first matching branch
+and allows `semidet` inference.
+
+**Rule:** In any stateful DCG rule, treat every state variable like `!IO` — every
+branch must account for every state variable, either updating it or equating in with out.
 
 ---
 

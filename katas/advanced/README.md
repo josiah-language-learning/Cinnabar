@@ -11,5 +11,6 @@ them in order before tackling the advanced puzzles.
 | `03-rtti/` | `deconstruct.deconstruct/5`, generic pretty-printer, when RTTI is appropriate |
 | `04-pragma-memo/` | `pragma memo` for deterministic predicates; manual memoization via state-threaded map |
 | `05-assoc-list-env/` | Association lists as environments: lookup, shadowing, deref chains; the idiom the meta-interpreter uses |
+| `06-abstract-module/` | Abstract type declaration; information hiding; `use_module` vs `import_module`; swapping implementations without touching clients |
 
 **Not in the Mercury tutorial.**

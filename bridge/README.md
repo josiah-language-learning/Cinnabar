@@ -22,3 +22,4 @@ blank-page friction: you already have a structure to work within and extend.
 | 01 | `01-maybe-extend` | `maybe`, chaining, validation | `katas/foundations/02-maybe` |
 | 02 | `02-pipeline-extend` | higher-order, `map`, grouping | `katas/foundations/04-higher-order` |
 | 03 | `03-dcg-extend` | DCGs, tokenizers, grammar extension | `katas/parsing/01-dcg-basics` |
+| 11 | `11-error-handling` | `maybe`, custom error types, `io.res`, exceptions | `katas/foundations/02-maybe`, `katas/foundations/07-io-error-handling` |
