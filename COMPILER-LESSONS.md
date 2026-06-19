@@ -110,6 +110,35 @@ fresh directory when verifying a file is self-contained.
 
 ---
 
+### `use_module` in interface section — names not re-exported to callers
+
+**Symptom:** Module A has `import_module B` in its interface section. Module C
+imports A. When C uses names from B, the compiler reports them as undefined even
+though A imported B.
+
+**Cause:** `import_module B` in an interface section exposes B's names to the
+implementation section but also re-exports them to any module that imports A. This
+can cause callers to accidentally depend on B transitively. `use_module B` in the
+interface section makes B's types usable in A's type and mode signatures without
+re-exporting any of B's names to A's callers.
+
+**Fix:** In interface sections, prefer `use_module` over `import_module`. In
+implementation sections, use `import_module` freely.
+
+```mercury
+:- interface.
+:- use_module list.           % list.list(T) usable in signatures; list not re-exported
+:- type my_type(T) == list.list(T).
+
+:- implementation.
+:- import_module list.        % member, length, etc. all available here
+```
+
+The rule: `use_module` in interface = opaque dependency. `import_module` in
+interface = transparent (re-exported) dependency.
+
+---
+
 ## 3. Determinism system
 
 ### `cc_multi` propagates up the entire call chain
@@ -777,6 +806,35 @@ each declaration.
 
 ---
 
+### Alternative to propagating `cc_multi`: `promise_equivalent_solutions [!:IO]`
+
+**Context:** `thread.spawn` is `cc_multi`. If `main` is `det` and you do not want to
+change its declaration, there is an alternative to propagating `cc_multi` upward.
+
+**Fix:** Wrap each `thread.spawn` call in
+`promise_equivalent_solutions [!:IO]`:
+
+```mercury
+promise_equivalent_solutions [!:IO]
+    thread.spawn(worker(Chan), !IO),
+```
+
+This tells Mercury: "all solutions of this goal produce observationally equivalent
+`!:IO` states." Because the IO state after spawning is the same regardless of which
+`cc_multi` resolution is chosen, the assertion is correct.
+
+**When to use each approach:**
+
+| Approach | Use when |
+|---|---|
+| Declare `main` `cc_multi` | All spawns in `main`; idiomatic Mercury style |
+| `promise_equivalent_solutions [!:IO]` | `main` must stay `det`; spawns are scattered through multiple predicates |
+
+Both are semantically equivalent for `thread.spawn`. The `cc_multi` propagation
+approach is simpler when spawning in multiple places.
+
+---
+
 ### `channel(T)` has no built-in sentinel — encode it in the element type
 
 **Symptom:** Sending `no` or `yes(X)` values to a `channel(int)`.
@@ -936,6 +994,31 @@ the C compilation environment (via `pragma foreign_decl` or an `#include`d heade
 
 ---
 
+### Omitting `will_not_call_mercury` causes per-call mutex acquisition
+
+**Symptom:** FFI code that calls simple C functions in a hot loop runs much slower
+than expected, or threads contend on an invisible lock.
+
+**Cause:** A `foreign_proc` without `will_not_call_mercury` tells the Mercury
+runtime that the C code might call back into Mercury. To make that safe, the runtime
+acquires the Mercury engine mutex on every call. For functions that never call back
+(most C library functions), this overhead is pure waste.
+
+**Fix:** Add `will_not_call_mercury` to the pragma attribute list:
+
+```mercury
+:- pragma foreign_proc("C",
+    c_abs(N::in, Abs::out),
+    [will_not_call_mercury, promise_pure, thread_safe],
+    "Abs = (N < 0) ? -N : N;").
+```
+
+`will_not_call_mercury` is not just a performance hint — it also disables the
+reentrancy guard. The three pragmas typically go together for simple C utility
+functions: `will_not_call_mercury, promise_pure, thread_safe`.
+
+---
+
 ### `univ_to_type` is `semidet` — wrap it when the caller must be `det`
 
 **Symptom:** Calling `univ_to_type(U, N)` from a predicate declared `det`.
@@ -957,6 +1040,90 @@ instead of failing).
 ---
 
 ## 7. Standard library surprises
+
+### `io.error_message` has both function and predicate forms — inline use causes type ambiguity
+
+**Symptom:** Calling `io.error_message(E)` inline inside `io.format` or inside a
+branch of a disjunction gives a type error or "ambiguous overloading" error.
+
+**Cause:** `io.error_message` is defined in two forms:
+- Function: `io.error_message(io.error) = string`
+- Predicate: `io.error_message(io.error, string)`
+
+When called inline in a position where Mercury must resolve which form is being
+used, the type checker sometimes cannot disambiguate. This is especially likely
+inside the `error(E)` branch of an `io.result` match, where the surrounding
+context has already committed the type of `E`.
+
+**Fix (option 1):** Extract `io.error_message` to a local variable first:
+
+```mercury
+Res = error(E),
+io.error_message(E, Msg),
+io.format("Error: %s\n", [s(Msg)], !IO)
+```
+
+**Fix (option 2):** Use the function form with an explicit type annotation at
+the call site to resolve the ambiguity.
+
+**Fix (option 3):** Throw the `io.error` as an exception, catch it in an outer
+scope where the type context is cleaner, then call `io.error_message` there.
+
+---
+
+### `/` is not defined for `int` — use `//` for integer division
+
+**Symptom:**
+```
+error: undefined symbol `/'/2.
+That symbol is defined in module `float', which does not have an
+`:- import_module' declaration.
+```
+
+Or a type error suggesting the result was expected to be `float`.
+
+**Cause:** Mercury uses distinct operators for integer and float division:
+- `//` — integer division (truncates toward zero), defined on `int`
+- `/` — float division, defined on `float`
+
+Using `/` on `int` expressions either gives "undefined symbol" (if `float` is not
+imported) or a type error (if it is). This surprises Prolog programmers used to
+`is/2` and Python/Java programmers used to `/` being overloaded.
+
+**Fix:** Replace `/` with `//` for integer division:
+
+```mercury
+average(A, B) = (A + B) // 2.
+```
+
+Related: `rem` and `mod` behave differently on negative numbers.
+- `rem`: truncated remainder (`-7 rem 3 = -1`)
+- `mod`: floored modulus (`-7 mod 3 = 2`)
+
+---
+
+### `=\=` does not exist — use `\=` for structural inequality
+
+**Symptom:**
+```
+error: undefined symbol `=\='/2.
+```
+
+**Cause:** Mercury does not have Prolog's arithmetic inequality operator `=\=`.
+Mercury's structural inequality operator is `\=` (succeeds when two terms cannot
+unify). For ground integers, `A \= B` is equivalent to `not (A = B)`, which is
+correct arithmetic inequality.
+
+There is no `=:=` either — use `=` for arithmetic equality of ground integers
+(since unification on ground terms compares values).
+
+**Fix:** Replace `=\=` with `\=`:
+
+```mercury
+( Denominator \= 0 -> X = Numerator // Denominator ; X = 0 )
+```
+
+---
 
 ### `io.res` uses `ok`/`error` constructors, not `yes`/`no`
 
