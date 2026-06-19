@@ -124,7 +124,12 @@ but would lift the curriculum from "solid" to "comprehensive."
   declaration, add `koans/advanced/07-solver-any-inst` (mode checker enforcing `any` vs
   `ground` without a constraint engine). Long-term: Rust CLP(FD) engine via FFI.
 
-- [ ] **Property-based testing** — no coverage. Tooling kata.
+- [x] **Property-based testing** — `katas/tooling/06-property-testing`: bounded generator
+  (`int.nondet_int_in_range`), semidet property, runner with `solutions/2` +
+  `find_counterexample`; shows passing and failing properties with counterexample output.
+  `koans/tooling/08-property-generator`: det generator passed to solutions — mode error.
+  COMPILER-LESSONS.md updated (section 7c): `int.between` → `int.nondet_int_in_range`,
+  det generator mode mismatch, `list.length` type ambiguity.
 
 - [x] **Module system depth** — `katas/advanced/06-abstract-module`: implement a `mset(T)`
   (multiset) abstract module; exercises cover abstract type enforcement, `use_module` vs

@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+mmc --make prop_test
+./prop_test

@@ -1079,6 +1079,79 @@ is undefined and a separate "undefined predicate `error'/1`" error fires.
 
 ---
 
+## 7c. Property-based testing
+
+### `int.between/3` does not exist in Mercury 22 — use `int.nondet_int_in_range/3`
+
+**Symptom:**
+```
+error: undefined predicate `int.between'/3.
+```
+
+**Cause:** The common name `between(Low, High, X)` for bounded integer generation does
+not exist in Mercury 22's `int` module. The predicate is named
+`int.nondet_int_in_range(Low, High, X)`. The name makes the determinism explicit.
+
+**Fix:**
+```mercury
+gen_small_int(N) :- int.nondet_int_in_range(-10, 10, N).
+```
+
+`int.nondet_int_in_range(Low, High, X)` is `(in, in, out) is nondet`. It backtracks
+from `Low` to `High` inclusive.
+
+---
+
+### Generator declared `det` — mode mismatch when passed to `solutions/2`
+
+**Symptom:**
+```
+in argument 2 of call to predicate `check_property/5':
+mode error: variable `V_7' has instantiatedness
+  `/* unique */ (pred(out) is det)',
+  expected instantiatedness was `(pred(out) is nondet)'.
+```
+
+**Cause:** `solutions/2` requires `pred(out) is nondet`. A generator declared `det`
+produces exactly one value and cannot backtrack. Passing it where `nondet` is expected
+is a mode mismatch.
+
+**Fix:** Declare the generator `nondet` and give it a body that backtracks:
+```mercury
+:- pred gen_small_int(int::out) is nondet.   % was: det
+gen_small_int(N) :- int.nondet_int_in_range(-10, 10, N).
+```
+
+A `det` generator also silently limits test coverage: the property is only checked
+against one value. The compiler catches the mode error, but without it, tests would
+appear to pass while most inputs go untested.
+
+---
+
+### `list.length` type ambiguity in property expressions
+
+**Symptom:**
+```
+error: ambiguous overloading causes type ambiguity.
+Possible type assignments include:
+  V_3: `int' or `pred(int)'
+```
+
+**Cause:** Writing `list.length(list.reverse(Xs)) = list.length(Xs)` in a property
+body. The `= ` unification is polymorphic, and Mercury cannot always resolve the
+return type of `list.length` in this position — `int` and `pred(int)` both match.
+
+**Fix:** Use the predicate form of `list.length` to make the type unambiguous:
+```mercury
+prop_reverse_length(Xs) :-
+    list.length(Xs, Len),
+    list.length(list.reverse(Xs), Len).
+```
+
+Or add an explicit type annotation: `list.length(Xs) : int`.
+
+---
+
 ## 8. Mercury 22.01.8 parallel grade (`&`) backend bugs
 
 These are confirmed compiler bugs in Mercury 22.01.8, not user errors. The

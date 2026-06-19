@@ -44,7 +44,7 @@ Katas and koans are organized into tracks. Puzzles draw on multiple tracks and l
 | Mode system | 7 | 6 | `katas/mode-system/01-insts-and-modes` |
 | Determinism | 6 | 6 | `katas/determinism/01-six-categories` |
 | Parsing | 9 | 7 | `katas/parsing/01-dcg-basics` |
-| Tooling | 5 | 7 | `katas/tooling/01-grades` |
+| Tooling | 6 | 8 | `katas/tooling/01-grades` |
 | Concurrency | 8 | 5 | `katas/concurrency/01-parallel-conjunction` |
 | Advanced | 6 | 6 | `katas/advanced/01-ffi-depth` |
 
