@@ -16,6 +16,12 @@ You've worked through the tutorial. You can follow a Mercury program when someon
 
 Now you want to *think* in Mercury — to reach for modes and determinism as tools rather than obstacles, and to feel the difference between logic programming and everything else.
 
+## Recommended order
+
+Foundations → Type system → Mode system → Determinism → Parsing. After those five, Tooling, Concurrency, and Advanced can be taken in any order. Puzzles work well between tracks as a change of pace — `puzzles/logic/` and `puzzles/data-structures/` pair naturally with Foundations. Bridges sit between katas and puzzles; bridge 01–03 after Foundations, bridge 04–06 after Mode system and Determinism, bridge 07–10 after Parsing and Advanced.
+
+Start at the beginning of each track even if it feels easy. The early exercises establish habits the later ones depend on.
+
 ## What's here
 
 Four exercise formats, each working different muscles:
@@ -31,14 +37,14 @@ Katas and koans are organized into tracks. Puzzles draw on multiple tracks and l
 
 | Track | Katas | Koans | Start here |
 |---|---|---|---|
-| Foundations | 12 | 7 | `katas/foundations/00-reactivation/01-hello-world` |
-| Type system | 10 | 4 | `katas/type-system/01-discriminated-unions` |
-| Mode system | 7 | 5 | `katas/mode-system/01-insts-and-modes` |
-| Determinism | 6 | 4 | `katas/determinism/01-six-categories` |
-| Parsing | 9 | 3 | `katas/parsing/01-dcg-basics` |
-| Tooling | 5 | 2 | `katas/tooling/01-grades` |
-| Concurrency | 8 | 2 | `katas/concurrency/01-parallel-conjunction` |
-| Advanced | 4 | 2 | `katas/advanced/01-ffi-depth` |
+| Foundations | 12 | 12 | `katas/foundations/00-reactivation/01-hello-world` |
+| Type system | 10 | 8 | `katas/type-system/01-discriminated-unions` |
+| Mode system | 7 | 6 | `katas/mode-system/01-insts-and-modes` |
+| Determinism | 6 | 5 | `katas/determinism/01-six-categories` |
+| Parsing | 9 | 6 | `katas/parsing/01-dcg-basics` |
+| Tooling | 5 | 7 | `katas/tooling/01-grades` |
+| Concurrency | 8 | 5 | `katas/concurrency/01-parallel-conjunction` |
+| Advanced | 5 | 6 | `katas/advanced/01-ffi-depth` |
 
 ### Bridges
 
@@ -69,11 +75,9 @@ Seventeen puzzles in `puzzles/`, organized by topic:
 | `concurrent/` | Parallel sort, pipeline, pipeline with unique state |
 | `advanced/` | Generic printer, memoized search, bidirectional search, combinator library, generic parser, plugin architecture, Mercury meta-interpreter |
 
-### Recommended order
+## Reference
 
-Foundations → Type system → Mode system → Determinism → Parsing. After those five, Tooling, Concurrency, and Advanced can be taken in any order. Puzzles work well between tracks as a change of pace — `puzzles/logic/` and `puzzles/data-structures/` pair naturally with Foundations. Bridges sit between katas and puzzles; bridge 01–03 after Foundations, bridge 04–06 after Mode system and Determinism, bridge 07–10 after Parsing and Advanced.
-
-Start at the beginning of each track even if it feels easy. The early exercises establish habits the later ones depend on.
+**[`COMPILER-LESSONS.md`](COMPILER-LESSONS.md)** — annotated compiler errors collected while building this curriculum. When Mercury gives you a cryptic error, check here before digging through documentation. It is the most practically useful file in the repository for day-to-day work.
 
 ## Setup
 

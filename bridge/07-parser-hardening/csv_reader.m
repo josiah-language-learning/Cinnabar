@@ -57,6 +57,9 @@ field(S) -->
         { S = string.from_char_list(Cs) }
     ;
         unquoted_chars(Cs),
+        % strip is a design choice: trims leading/trailing whitespace from
+        % unquoted fields. RFC 4180 does not require this; omit if you need
+        % whitespace-preserving CSV.
         { S = string.strip(string.from_char_list(Cs)) }
     ).
 

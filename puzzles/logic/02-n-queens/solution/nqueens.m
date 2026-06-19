@@ -13,6 +13,8 @@
 queens(N, Qs) :-
     queens_acc(N, N, [], Qs).
 
+% The solution list encodes the board as: index = row (1-based, built in reverse),
+% value = column. queens_acc works from row N down to 1, prepending each chosen column.
 :- pred queens_acc(int::in, int::in, list(int)::in, list(int)::out) is nondet.
 queens_acc(_, 0, Placed, Placed).
 queens_acc(N, Row, Placed, Qs) :-

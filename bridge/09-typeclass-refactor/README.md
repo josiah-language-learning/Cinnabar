@@ -86,6 +86,13 @@ float environment: `["x" - 10.0, "y" - 3.0]`.
 Division by `0.0` in Mercury produces infinity, not an error. Your `div_safe` can
 test `B = 0.0` to detect this before dividing.
 
+> **Note:** Each instance needs the division operator appropriate to its type.
+> `//` is integer truncating division and is a type error when applied to `float`.
+> The `float` instance uses `/`, which is floating-point division. The `int`
+> instance uses `//` to make truncation explicit — using `/` on `int` would also
+> work in Mercury, but `//` signals intent. The operator choice is
+> instance-specific; there is no single `div_safe` body that is correct for both.
+
 ### 4. Write the `rational` instance
 
 Define a `rational` type:

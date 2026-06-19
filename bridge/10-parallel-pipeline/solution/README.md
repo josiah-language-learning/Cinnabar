@@ -84,6 +84,20 @@ busy_wait(0).
 busy_wait(N) :- N > 0, busy_wait(N - 1).
 ```
 
+> **Note:** In `asm_fast` grade (the default), Mercury tail-call-optimizes
+> `busy_wait` away entirely because it has no IO. The delay is a silent no-op and
+> the backpressure demo appears not to work. Use `io.write_string` +
+> `io.flush_output(!IO)` to force IO on each iteration, or `time.sleep` for a
+> real delay:
+>
+> ```mercury
+> :- pred busy_wait(int::in, io::di, io::uo) is det.
+> busy_wait(0, !IO).
+> busy_wait(N, !IO) :- N > 0,
+>     io.write_string(".", !IO), io.flush_output(!IO),
+>     busy_wait(N - 1, !IO).
+> ```
+
 Call `busy_wait(100000)` before processing each item. With an unbounded channel,
 the reader enqueues all N items instantly and then the transformer processes them
 slowly. With the bounded channel (capacity 10), the reader blocks after 10 items

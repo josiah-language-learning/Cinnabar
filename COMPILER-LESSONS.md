@@ -181,6 +181,36 @@ calling predicate as `cc_multi`.
 
 ---
 
+### `promise_equivalent_solutions` gives `semidet`, not `det`, when inner goal can fail
+
+**Symptom:** Declaring a predicate `det` with `promise_equivalent_solutions` wrapping
+the body. Mercury infers `semidet`.
+
+**Error:**
+```
+error: determinism declaration not satisfied.
+Declared `det', inferred `semidet'.
+The reasons for the difference are the following.
+Call to `list.member'(out, in) can fail.
+Negated goal can succeed.
+```
+
+**Cause:** `promise_equivalent_solutions [Vars] (G)` removes the *multi-solution*
+property but not the *can-fail* property:
+
+| inner goal | result |
+|------------|--------|
+| `cc_multi` | `det`  |
+| `cc_nondet` | `semidet` |
+
+If the wrapped goal can fail (e.g., `list.member` on an empty list), the result is
+`semidet`. The pragma does not promote a can-fail goal to `det`.
+
+**Fix:** Either change the declaration to `is semidet`, or ensure the wrapped goal
+always produces at least one solution (making it `cc_multi`).
+
+---
+
 ### `list.member` is `nondet`, not `cc_nondet`
 
 **Cause:** `list.member` is genuinely nondeterministic — it generates all members.
@@ -204,7 +234,84 @@ sub-goal may fail — there's no recovery path in the parallel context.
 
 ---
 
+### `require_complete_switch` gives two errors, not one
+
+**Symptom:** Using `require_complete_switch [Var] (...)` on an incomplete switch
+produces two distinct errors:
+
+```
+error: determinism declaration not satisfied.
+Declared `det', inferred `semidet'.
+The switch on Direction does not cover `east'/0 or `west'/0.
+
+Error: the switch on `Direction' is required to be complete,
+but it does not cover `east'/0 or `west'/0.
+```
+
+The first is Mercury's standard incomplete-switch determinism error. The second is
+the pragma's own error, fired from the pragma site. Both name the missing constructors.
+
+**Without the pragma:** only the first error fires, and it points at the `det`
+declaration rather than the switch itself. The pragma makes the second error appear,
+which is more actionable (points directly at the switch).
+
+**Fix:** Add the missing constructor arms. The pragma error names them explicitly.
+
+---
+
 ## 4. Mode system
+
+### Scope error: binding a variable inside `\+`
+
+**Symptom:** Using a variable as the output of a predicate called inside `\+`, then
+using that variable outside the negation.
+
+**Error:**
+```
+scope error: attempt to bind a non-local variable inside a negation.
+Variable `T' has instantiatedness `free',
+expected instantiatedness was `ground'.
+```
+
+**Cause:** `\+` creates an opaque scope. Bindings produced inside `\+` do not
+propagate to the outer clause — `T` enters the negation `free` and exits `free`,
+regardless of what happens inside. A variable declared as `out` in the clause head
+must be `ground` at the end of the clause, so the mode checker catches this.
+
+**Common pattern:** Trying to use negation to "select" a value by negating a bad
+check: `\+ (list.member(T, Xs), bad(T))`. This does not bind `T` — it only checks
+whether there is any T in Xs satisfying `bad(T)`.
+
+**Fix:** Separate generation from testing. Use `list.member(T, Xs)` to bind `T`,
+then test the property separately: `T \= bad_value` or `\+ bad(T)` with T already
+ground. `list.find_first_match` is the idiomatic way to find the first element
+satisfying a property with `semidet` result.
+
+---
+
+### `nondet` predicate in if-then-else condition from `det` context → `multi`
+
+**Symptom:** Calling a `nondet` predicate in the condition of `( P -> T ; E )` inside
+a `det` predicate. The outer predicate is inferred `multi`.
+
+**Error:**
+```
+error: determinism declaration not satisfied.
+Declared `det', inferred `multi'.
+Call to `find_important'(in, out) can succeed more than once.
+```
+
+**Cause:** An if-then-else condition is a committed-choice context, but only for
+`semidet` or `cc_nondet` goals. A `nondet` condition can succeed multiple times —
+Mercury treats each solution as a branch, making the if-then-else `multi` (one
+result per solution of the condition). The outer `det` declaration then fails.
+
+**Fix:** Ensure the condition predicate is `semidet` or `cc_nondet`. For list
+search, use `list.find_first_match` (semidet) rather than `list.member` +
+filter (nondet). Alternatively, wrap with `promise_equivalent_solutions` if all
+solutions are logically equivalent.
+
+---
 
 ### Mercury reorders conjuncts — "free variable" bugs can be silently fixed
 
@@ -234,6 +341,80 @@ mode — it only prevents creating aliases (two simultaneous `di` references).
 
 **The actual uniqueness error** (aliasing) occurs when you pass the same `di` value
 to two separate destructive operations in the same clause.
+
+---
+
+### `!X` shorthand is not allowed in lambda argument lists
+
+**Symptom:** Writing `(pred(X::in, !Acc) is det :- ...)` in a `list.foldl` call.
+
+**Error:**
+```
+Error: !Acc cannot be a lambda argument.
+  Perhaps you meant !.Acc or !:Acc.
+Error: in head of lambda expression: some but not all arguments have modes.
+```
+
+**Cause:** `!X` expands to two arguments — the old and new values of a state
+variable — but this expansion only works in *call* positions. Lambda heads require
+each argument to be declared separately with its own mode annotation. There is no
+mechanism for the compiler to expand `!Acc` in a lambda head because it does not
+know which position is in and which is out without seeing all the mode annotations.
+
+**Fix:** Use the `N0`/`N` naming convention explicitly:
+```mercury
+(pred(X::in, Acc0::in, Acc::out) is det :- Acc = Acc0 + X)
+```
+
+---
+
+### `!:N` is free until assigned — using it as input is a mode error
+
+**Symptom:** Writing `!:N = !:N * 2` intending to double the value of N.
+
+**Error:**
+```
+warning: variable `STATE_VARIABLE_N_0' occurs only once in this scope.
+mode error: variable `STATE_VARIABLE_N' has instantiatedness `free',
+  expected instantiatedness was `ground'.
+```
+
+**Cause:** In a clause using `!N`, two internal variables are created: the old
+value (`STATE_VARIABLE_N_0`, which is `!.N`, mode `in`) and the new value
+(`STATE_VARIABLE_N`, which is `!:N`, mode `out`). The output variable starts free.
+Using `!:N` on the right-hand side of an expression reads a free variable, which
+the mode checker rejects.
+
+The warning about `STATE_VARIABLE_N_0` is a companion signal: if the old value
+(`!.N`) is never read, you are probably reading `!:N` where you meant `!.N`.
+
+**Fix:** `!:N = !.N * 2` — read `!.N` (ground), write result to `!:N` (free → ground).
+
+---
+
+### Cannot use `!:IO` inside a lambda passed to a pure combinator
+
+**Symptom:** Passing a lambda that calls an IO predicate to `list.map`.
+
+**Error:**
+```
+Error: cannot use !:IO here due to the surrounding lambda expression;
+  you may only refer to !.IO.
+Here is the surrounding context that makes state variable IO readonly.
+```
+
+**Cause:** `list.map` has no IO threading — its lambda signature is
+`pred(T::in, U::out) is det`. When the lambda body uses `!IO`, Mercury tries to
+wire up the write-side (`!:IO`), but the surrounding `list.map` call has no
+mechanism to consume and produce the unique IO token. The lambda context makes
+`!:IO` (the write side) unavailable; only `!.IO` (a read-only view) is reachable.
+
+**Fix:** Replace `list.map` with `list.foldl`, which accepts an extra state pair:
+```mercury
+list.foldl(
+    (pred(S::in, !.IO::di, !:IO::uo) is det :- io.write_string(S, !IO)),
+    Strs, !IO)
+```
 
 ---
 
@@ -300,6 +481,93 @@ indirect call) is equivalent to the existential+dictionary approach.
 
 ## 5. Type system
 
+### "Unsatisfiable typeclass constraint" — two different causes, same message
+
+Mercury reports "unsatisfiable typeclass constraint: `show(color)'" for two
+distinct problems. Recognizing which one you have determines the fix.
+
+**Cause 1: no instance for a concrete type.**
+You call a typeclass method on `color` but never declared `instance show(color)`.
+
+```
+instance_koan.m: unsatisfiable typeclass constraint:
+    `instance_koan.show(instance_koan.color)'.
+```
+
+Fix: write the missing instance.
+
+**Cause 2: missing constraint on a type variable.**
+A polymorphic predicate calls `show(X, Str)` where `X :: T`, but the predicate
+signature does not declare `<= show(T)`.
+
+```
+constraint_koan.m: unsatisfiable typeclass constraint: `constraint_koan.show(T)'.
+```
+
+Fix: add `<= show(T)` to the `:- pred` declaration. This propagates the requirement
+to callers, which must then supply `T` with a `show` instance.
+
+The disambiguator: if the error names a concrete type (`color`, `shape`), write
+an instance. If it names a type variable (`T`), add a constraint to the signature.
+
+---
+
+### Subclass instance requires superclass instance to exist first
+
+**Symptom:** Declaring `instance describable(shape)` when `describable <= printable`
+but no `instance printable(shape)` exists.
+
+**Error:**
+```
+In instance declaration for `describable/1':
+the following superclass constraint is not satisfied:
+  `superclass_koan.printable(superclass_koan.shape)'.
+```
+
+**Cause:** Mercury checks superclass constraints at the declaration site of the
+subclass instance, not at use sites. Any code that has `describable(shape)` also
+implicitly has `printable(shape)` — so the superclass instance must exist concretely.
+
+**Fix:** Declare `instance printable(shape)` before `instance describable(shape)`.
+
+---
+
+### Comma inside `where [...]` is an item separator, not a conjunction
+
+**Symptom:** Writing a multi-goal method body inside an instance `where [...]` block.
+
+**Error:**
+```
+In instance declaration for `printable/1':
+  the type class has no predicate method named `write_string'/3.
+```
+
+**Cause:** Inside `where [...]`, commas separate *method clauses*, not goals.
+The compiler reads:
+```mercury
+:- instance printable(shape) where [
+    do_print(S, !IO) :- describe(S, Str),       % item 1
+    io.write_string(Str ++ "\n", !IO)            % item 2 — NOT a conjunction goal
+].
+```
+The second line is parsed as a new method definition, and `io.write_string` is not
+a method of `printable` — hence the error.
+
+**Fix:** Delegate multi-goal bodies to a module-level predicate:
+```mercury
+:- instance printable(shape) where [
+    do_print(S, !IO) :- print_shape(S, !IO)   % single-goal body — safe
+].
+
+:- pred print_shape(shape::in, io::di, io::uo) is det.
+print_shape(S, !IO) :-
+    describe(S, Str),
+    io.write_string(Str ++ "\n", !IO).
+```
+Single-goal method bodies (no comma) are always safe inside `where [...]`.
+
+---
+
 ### `=` is a goal in Mercury, not an expression
 
 **Symptom:** Writing `bool_val(VA = VB)` in a function body — intending to produce
@@ -360,7 +628,329 @@ eval(add_e(A, B)) = Result :-
 
 ---
 
-## 6. Standard library surprises
+## 5b. Tabling and tail recursion pragmas
+
+### `pragma memo` cannot be applied to predicates with unique-mode arguments
+
+**Symptom:** Applying `pragma memo` to a predicate that threads `io::di, io::uo`.
+
+**Error:**
+```
+Error: `:- pragma memo' declaration not allowed for procedure with unique modes.
+```
+
+**Cause:** Mercury's tabling system memoizes by storing ground inputs in a hash
+table and returning cached outputs. The IO state (`io::di`) is unique, not ground —
+it cannot be compared for equality, stored in a table, or replayed. The error fires
+at the declaration site, not at any call site.
+
+**Fix:** Remove `pragma memo` from any predicate that threads unique-mode arguments.
+For loop detection on pure recursive predicates (no IO), `pragma loop_check` is
+available — it also requires non-unique inputs.
+
+---
+
+### `pragma require_tail_recursion` defaults to `[warn]` — use `[error]` to enforce
+
+**Symptom:** Adding `pragma require_tail_recursion(pred/arity, [])` to a
+non-tail-recursive predicate. The compiler produces a warning but still compiles.
+
+**Cause:** The default option is `[warn]`, not `[error]`. A warning does not
+block compilation.
+
+**Fix:** Use `[error]` to turn the pragma into a hard compile-time failure:
+```mercury
+:- pragma require_tail_recursion(sum_list/2, [error]).
+```
+The error message "self-recursive call is not tail recursive" names the line
+of the non-tail call. The fix is to introduce an accumulator so the recursive
+call is the last goal in every clause.
+
+---
+
+## 6. Purity system
+
+### `foreign_proc` without `promise_pure` is impure — error fires at the declaration
+
+**Symptom:** A `foreign_proc` clause without a `promise_pure` attribute. Mercury
+errors at the predicate declaration, not at the call site.
+
+**Error:**
+```
+purity error: predicate is impure.
+It must be declared `impure' or promised pure.
+
+Error: foreign clause for predicate `c_square'/2 has purity impure
+but that predicate has been declared pure.
+```
+
+**Cause:** All `foreign_proc` clauses are **impure by default** — Mercury cannot
+inspect foreign code and assumes the worst. The `:- pred` declaration is implicitly
+`pure` (the default). The mismatch between an impure clause and a pure declaration
+is caught when the clause is processed.
+
+**Fix options:**
+1. Add `promise_pure` to the attribute list — valid when the C code is a true
+   mathematical function of its inputs (no global reads, no IO, no mutation).
+2. Declare the Mercury predicate `:- impure` and propagate impurity to callers.
+3. Thread `!IO` through the call to make side effects explicit in Mercury's type
+   system — the standard approach for foreign code with IO effects.
+
+**`promise_pure` is a promise, not a check.** If the C code is not actually pure,
+the compiler will not warn. Incorrect `promise_pure` enables the optimizer to
+reorder or eliminate calls, producing incorrect behavior silently.
+
+---
+
+## 6b. Concurrency system
+
+### `thread.spawn` callback must be `cc_multi`, not `det`
+
+**Symptom:** Passing a `det` predicate to `thread.spawn`.
+
+**Error:**
+```
+mode error: variable `V_6' has instantiatedness `(pred(di, uo) is det)',
+  expected instantiatedness was `(pred(di, uo) is cc_multi)'.
+```
+
+**Cause:** `thread.spawn` has mode `(pred(di, uo) is cc_multi, di, uo) is cc_multi`.
+The callback must be `cc_multi`. A `det` predicate has a stricter contract
+(exactly one outcome, no committed choice), which doesn't satisfy the spawn mode.
+
+**Note:** Mercury may warn that a trivially-`det` body declared `cc_multi` "could
+be tighter." The warning is correct about the body, but the `cc_multi` declaration
+is required to satisfy `thread.spawn`'s mode. This is one of the rare cases where
+you intentionally declare weaker than inferred.
+
+---
+
+### `cc_multi` propagates upward from `thread.spawn`
+
+**Symptom:** Predicate calling `thread.spawn` is declared `det`.
+
+**Error:**
+```
+error: determinism declaration not satisfied.
+  Declared `det', inferred `multi'.
+  Call to `thread.spawn'(...) can succeed more than once.
+
+Error: call to predicate `thread.spawn'/3 with determinism `cc_multi'
+  occurs in a context which requires all solutions.
+```
+
+**Cause:** `thread.spawn` is `cc_multi`. Any predicate that calls it must be
+at least `cc_multi`. The property propagates upward through the entire call chain
+to `main`. Anywhere `thread.spawn` is introduced, trace the callers and update
+each declaration.
+
+---
+
+### `channel(T)` has no built-in sentinel — encode it in the element type
+
+**Symptom:** Sending `no` or `yes(X)` values to a `channel(int)`.
+
+**Error:**
+```
+type error: argument has type `maybe.maybe(T)', expected type was `int'.
+```
+
+**Cause:** Mercury channels are monomorphic — `channel(int)` carries only `int`.
+There is no out-of-band "closed" signal. To signal end-of-stream, the sentinel
+must be part of the element type: use `channel(maybe(int))`, send `yes(X)` for
+data and `no` as the terminal signal. The type system makes the communication
+protocol explicit.
+
+---
+
+## 6c. Parsing and DCG
+
+### `phrase/2` does not exist in Mercury — call DCG predicates directly
+
+**Symptom:** Using `phrase(Rule, Input)` style from Prolog.
+
+**Error:** `undefined predicate 'phrase'/2` or `undefined predicate 'phrase'/3`.
+
+**Cause:** Mercury does not provide a `phrase` meta-predicate. DCG rules defined
+with `-->` desugar to regular predicates with two extra `list(T)` arguments. Call
+them directly: `rule(Args..., Input, Rest)`. There is no DCG utility module that
+exports `phrase` in Mercury 22.01.8.
+
+---
+
+### Multi-clause DCG rules infer `nondet`, not `semidet`
+
+**Symptom:** Declaring a multi-clause DCG rule `semidet` or `det`.
+
+**Error:**
+```
+error: determinism declaration not satisfied.
+  Declared `semidet', inferred `nondet'.
+  Disjunction has multiple clauses with solutions.
+```
+
+**Cause:** Multiple clauses are logical alternatives — any of them can succeed
+on a given input. Mercury cannot statically prove mutual exclusivity, so it
+infers `nondet`. To get `semidet`, collapse the alternatives into a single clause
+using if-then-else. The if-then-else commits to the first matching branch.
+
+---
+
+### DCG rules take `list(char)`, not `string` — convert before calling
+
+**Symptom:** Passing a string literal directly to a DCG rule.
+
+**Error:**
+```
+type error: variable `Input' has type `string',
+  expected type was `list.list(character)'.
+```
+
+**Cause:** DCG rules desugar to predicates on `list(T)`. A `string` is not a
+`list(char)` — they are distinct types. Convert with `string.to_char_list/2`
+before calling any DCG rule.
+
+---
+
+### DCG rule determinism propagates to every caller
+
+**Symptom:** Calling a `semidet` DCG rule from a `det` predicate.
+
+**Error:**
+```
+error: determinism declaration not satisfied.
+  Declared `det', inferred `semidet'.
+  Call to `digit_char'(out, in, out) can fail.
+```
+
+**Cause:** A DCG rule inherits the determinism of its body. If a rule can fail
+(e.g., `[C], { char.is_digit(C) }` fails on non-digit input), it is `semidet`.
+Calling it from a `det` predicate propagates the `semidet` constraint upward.
+Either declare the caller `semidet` and handle failure at the use site, or wrap
+the result in `maybe(T)` and return `no` on failure.
+
+---
+
+## 6d. FFI and RTTI
+
+### `pragma foreign_export` arity must match the predicate's declared arity
+
+**Symptom:** `pragma foreign_export("C", pred(in, out), "name")` when the predicate
+has three arguments.
+
+**Error:**
+```
+Error: `:- pragma foreign_export' declaration for predicate `pred'/2
+    without corresponding `:- pred' declaration.
+    `pred' does exist with arity 3.
+```
+
+**Cause:** Mercury derives the predicate identity from the name and the number of
+modes in the export pragma. If the count is wrong, it looks for (and fails to find)
+a predicate with that arity. The error message helpfully names the correct arity.
+
+**Fix:** List all argument modes in the export pragma:
+```mercury
+:- pragma foreign_export("C", scale(in, in, out), "mercury_scale").
+```
+
+---
+
+### `pragma foreign_enum` mapping must cover every constructor
+
+**Symptom:** `pragma foreign_enum` for a type with N constructors that only lists
+N-1 mappings.
+
+**Error:**
+```
+In `:- pragma foreign_enum' declaration for type `color'/0:
+    error: the following constructor does not have a foreign value:
+        `yellow'.
+```
+
+**Cause:** Every constructor needs a C value. A partial mapping would produce
+undefined behavior when the missing constructor is passed across the FFI boundary.
+The check is at declaration time — the same static completeness guarantee as
+`require_complete_switch`.
+
+**Fix:** Add the missing mapping entry. The C constant must also be available in
+the C compilation environment (via `pragma foreign_decl` or an `#include`d header).
+
+---
+
+### `univ_to_type` is `semidet` — wrap it when the caller must be `det`
+
+**Symptom:** Calling `univ_to_type(U, N)` from a predicate declared `det`.
+
+**Error:**
+```
+error: determinism declaration not satisfied. Declared `det', inferred `semidet'.
+Call to `univ.univ_to_type'(in, out) can fail.
+```
+
+**Cause:** `univ_to_type` can fail at runtime if the dynamic type stored in the
+`univ` doesn't match the requested output type. Failing is part of its contract,
+and Mercury propagates the can-fail property to any `det`-declared wrapper.
+
+**Fix:** Either change the wrapper to `semidet` and handle failure at the call site
+with if-then-else, or use `det_univ_to_type` (throws an exception on mismatch
+instead of failing).
+
+---
+
+## 7. Standard library surprises
+
+### `io.res` uses `ok`/`error` constructors, not `yes`/`no`
+
+**Symptom:** Pattern-matching on the result of `io.open_input` with `yes(Stream)`.
+
+**Error:**
+```
+error: undefined symbol `yes'/1.
+That symbol is defined in modules `bool' and `maybe', none of which
+have `:- import_module' declarations.
+```
+
+**Cause:** `io.res(T)` is defined as `ok(T) ; error(io.error)` — it is not a
+`maybe`. Students familiar with `maybe(T) ---> yes(T) ; no` often assume `io.res`
+follows the same naming. The constructor `yes` belongs to a different type entirely.
+
+Mercury's error message helpfully names the modules where `yes` *is* defined
+(`bool`, `maybe`), which makes the cross-type confusion diagnosable.
+
+**Fix:** Replace `yes(Stream)` with `ok(Stream)` and `no` with `error(_)`.
+
+---
+
+### `array.set` consumes its input array — updates must chain
+
+**Symptom:** Calling `array.set` with the same original `Arr0` twice, intending
+to make two independent updates.
+
+**Error:**
+```
+unique-mode error: the called procedure would clobber its argument,
+  but variable `Arr0' is still live.
+warning: variable `Arr1' occurs only once in this scope.
+```
+
+**Cause:** `array.set` has mode `(in, in, array_di, array_uo) is det` — the input
+array (`array_di`) is destructively consumed and replaced by the output (`array_uo`).
+The original handle is invalidated. Using it again is a uniqueness violation.
+
+The warning about the unused `Arr1` is a companion signal: if the output of one set
+call is never used, you almost certainly used the original array again by mistake.
+
+Updates must chain linearly through the outputs:
+```
+Arr0 →[set 0]→ Arr1 →[set 1]→ Arr2 →[set 2]→ Result
+```
+
+**Contrast with `version_array`:** `version_array` is persistent — reads use `in`
+mode, the original is never consumed, and multiple live references are allowed.
+Use `version_array` when you need to branch or retain old versions.
+
+---
 
 ### `char.digit_to_int` does not exist — use `char.decimal_digit_to_int`
 
@@ -395,7 +985,43 @@ the condition.
 
 ---
 
-## 7. Mercury 22.01.8 parallel grade (`&`) backend bugs
+## 7b. Testing convention
+
+### Test predicate with direct unification gives "unification can fail" error
+
+**Symptom:** A test predicate declared `det` whose body ends with `Got = Expected`.
+
+**Error:**
+```
+error: determinism declaration not satisfied. Declared `det', inferred `semidet'.
+Unification of `Got' and `6' can fail.
+```
+
+**Cause:** Direct unification (`=`) is `semidet` — it succeeds when both sides
+match and fails otherwise. A `det` predicate cannot contain a goal that can fail.
+
+**Fix:** Wrap unification in an if-then-else with `error/1` in the else branch:
+```mercury
+:- import_module require.
+
+test_sum :-
+    sum_list([1, 2, 3], Got),
+    ( Got = 6 ->
+        true
+    ;
+        error("test_sum failed: expected 6, got " ++ string.int_to_string(Got))
+    ).
+```
+
+Mercury treats exception-throwing as `det` (one outcome: an exception).
+The if-then-else as a whole is `det` because both branches are `det`.
+
+`error/1` is in `import_module require`. Without this import, the predicate
+is undefined and a separate "undefined predicate `error'/1`" error fires.
+
+---
+
+## 8. Mercury 22.01.8 parallel grade (`&`) backend bugs
 
 These are confirmed compiler bugs in Mercury 22.01.8, not user errors. The
 workarounds are required for code using `&` in the `asm_fast.par.gc.stseg` grade.

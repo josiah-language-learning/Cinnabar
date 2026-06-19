@@ -24,6 +24,8 @@ typeclass. Plugins are stored in a heterogeneous list. The core system iterates
 the list and calls the typeclass method on each one, without knowing the
 concrete types.
 
+---
+
 ## The typeclass
 
 ```mercury
@@ -34,6 +36,8 @@ concrete types.
 ```
 
 `plugin_name` returns a display name. `apply` transforms an input string.
+
+---
 
 ## The existential wrapper
 
@@ -46,6 +50,8 @@ Construct with `plugin(Value)` where Mercury infers T from Value and checks that
 `formatter(T)` has an instance. Deconstruct in a clause head or with `=` — Mercury
 brings the constraint `formatter(T)` back into scope for the existential body.
 
+---
+
 ## Three concrete plugins
 
 Implement these three formatter types, each with their own `formatter` instance:
@@ -57,6 +63,8 @@ Implement these three formatter types, each with their own `formatter` instance:
 The `repeat` and `prefix` plugins carry data — the int and the prefix string.
 This demonstrates that plugins are values, not just type tags.
 
+---
+
 ## The pipeline
 
 ```mercury
@@ -66,6 +74,8 @@ This demonstrates that plugins are values, not just type tags.
 For each plugin in the list, print the plugin name, the input, and the result
 of `apply`. Use the output of the previous plugin as the input to the next
 (a fold).
+
+---
 
 ## Main
 

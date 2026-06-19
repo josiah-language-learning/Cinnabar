@@ -21,11 +21,11 @@ looking until you have read the error and formed a hypothesis.
 
 | Track | Koans |
 |-------|-------|
-| `foundations/` | 01-maybe, 02-string, 03-higher-order, 04-modules, 05-exceptions, 06-file-io, 07-built-in-types |
-| `type-system/` | 01-adt, 02-typeclass, 03-abstract, 04-parametric |
-| `mode-system/` | 01-inst, 02-inference, 03-higher-order-inst |
-| `determinism/` | 01-det-mismatch, 02-nondet-in-det, 03-committed-choice |
-| `parsing/` | 01-dcg-goals, 02-dcg-mixed |
-| `tooling/` | 01-grade (text only) |
-| `concurrency/` | 01-parallel |
-| `advanced/` | 01-ffi |
+| `foundations/` | 01-maybe, 02-string, 03-higher-order, 04-modules, 05-exceptions, 06-file-io, 07-built-in-types, 08-res-constructors, 09-array-unique, 10-foldl-accumulator, 11-state-var-direction, 12-map-io-capture |
+| `type-system/` | 01-adt, 02-typeclass, 03-abstract, 04-parametric, 05-missing-instance, 06-missing-constraint, 07-superclass-instance, 08-phantom-mismatch |
+| `mode-system/` | 01-inst, 02-inference, 03-higher-order-inst, 04-uniqueness-violation, 05-mode-errors (set), 06-negation-bindings |
+| `determinism/` | 01-det-mismatch, 02-nondet-in-det, 03-committed-choice, 04-determinism-errors (set), 05-promise-equivalent-solutions |
+| `parsing/` | 01-dcg-goals, 02-dcg-mixed, 03-dcg-mode, 04-dcg-nondet, 05-phrase-string, 06-phrase-det |
+| `tooling/` | 01-grade (text only), 02-module-name, 03-pure-predicate-optimization (text only), 04-require-complete-switch, 05-memo-io, 06-tail-rec-pragma, 07-test-det |
+| `concurrency/` | 01-parallel, 02-shared-state, 03-spawn-det, 05-spawn-propagate, 06-channel-sentinel |
+| `advanced/` | 01-ffi, 02-existential-escape, 03-impure-foreign-proc, 04-univ-det, 05-export-arity, 06-foreign-enum |

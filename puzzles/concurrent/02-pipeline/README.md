@@ -4,9 +4,13 @@
 
 **Requires:** `.par` grade
 
-**Why Mercury:** a multi-stage pipeline demonstrates that channel-based concurrency in
-Mercury composes cleanly — each stage is an independent predicate that reads from one
-channel and writes to another.
+**Why Mercury:** the pipeline makes three Mercury-specific mechanics work together.
+`!IO` is a unique token that cannot be shared across threads — each spawned predicate
+receives its own `!IO` pair, enforcing that IO actions in different stages cannot
+interleave unsafely. `channel(T)` is the only sanctioned way to hand values between
+threads; there is no shared mutable state to corrupt. And `maybe(T)` is the natural
+close sentinel: when the producer puts `no`, each stage propagates it downstream and
+exits, giving you clean shutdown without a separate signal channel.
 
 ## Prerequisites
 

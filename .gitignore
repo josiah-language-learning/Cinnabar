@@ -20,6 +20,8 @@ Mercury/
 *.o
 # Generated C from start.m (kata convention: all starters named start.m)
 start.c
+# Generated C from solution/fixed.m
+fixed.c
 
 # Compiled executables — mmc outputs a binary with the same name as the module.
 # All module names in this repo are listed below.
