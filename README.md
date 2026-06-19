@@ -2,6 +2,8 @@
 
 *Ore for the Mercury programmer*
 
+![Cinnabar: Ore for the Mercury programmer](docs/images/cinnabar-banner.png)
+
 Cinnabar (HgS) is the red mineral from which mercury is smelted. You bring raw material; the heat does the work.
 
 This repository contains katas, koans, bridges, and puzzles for programmers who have completed the [official Mercury tutorial](https://mercurylang.org/documentation/tutorial.html) and want to develop genuine fluency — the kind built by writing, breaking, and rewriting programs rather than reading about them.
