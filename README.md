@@ -1,5 +1,9 @@
 # Cinnabar
 
+> **Pre-alpha work in progress.** This is an AI-assisted ("vibe-coded") curriculum I am building for my own path from the Mercury tutorial toward practical fluency. It is public to document the process and invite corrections, not yet as a polished or authoritative learning resource.
+>
+> You are welcome to use the curriculum as it is, adapt it for your own learning, and contribute corrections or exercises. Expect incomplete material, changing structure, and occasional technical mistakes; verify examples against your installed Mercury version.
+
 *Ore for the Mercury programmer*
 
 ![Cinnabar: Ore for the Mercury programmer](docs/images/cinnabar-banner.png)
