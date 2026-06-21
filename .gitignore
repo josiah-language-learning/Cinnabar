@@ -5,11 +5,17 @@
 # mmc intermediate build directory (C output, object files, dep files)
 Mercury/
 
+# direnv / nix-direnv local environment cache (not part of the curriculum)
+.direnv/
+
 # mmc-generated Mercury interface headers
 *.mh
 
 # mmc error log (usually empty on success, never meaningful to track)
 *.err
+# Track koan diagnostic snapshots (needed by ci.sh compile_fail)
+!**/*_koan.err
+!**/solution/*.err
 
 # mmc-generated C source, init files, and object files (may land in source dir
 # depending on how mmc is invoked, not just inside Mercury/)
@@ -34,6 +40,10 @@ pipeline
 search
 tokenizer
 utils
+# Bridge 12 (currying/impurity) starter
+transforms
+# Puzzle 08 (multi-module config) main
+config_demo
 # Bridge solution helpers
 cc_unwrapped
 client
