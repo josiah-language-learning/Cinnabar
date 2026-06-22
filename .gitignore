@@ -30,8 +30,10 @@ fixed.c
 
 # Compiled executables — mmc outputs a binary with the same name as the module.
 # All module names in this repo are listed below.
-# Kata executables (all named 'start')
+# Kata executables (all named 'start', plus two-solution variants)
 start
+start_bang
+start_explicit
 # Bridge starters and helpers
 config_reader
 convert
