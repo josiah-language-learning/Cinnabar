@@ -28,22 +28,17 @@ compile. "Looks plausible" is not done.
 
 ## P0 — trust (CI + navigation)
 
-- [ ] `[Big Pickle]` `{medium}` **Fix CI snapshot mismatch to FAIL.**
-  `ci.sh:66-74`: when `all_found=false` (diagnostic differs), it prints `PASS (broke, diagnostic
-  differs...)` and still increments `pass`. Change to increment `fail`/append to `failures`, same
-  as a compile-PASS error. Either regenerate stale `.err` snapshots or remove the check. This
-  undermines CI's claim to verify diagnostics. *(Codex P1→P0; SYNTHESIS §3.1)*
+- [x] `[Big Pickle]` `{medium}` **Fix CI snapshot mismatch to FAIL.**
+  `ci.sh:66-74`: when `all_found=false` (diagnostic differs), it now increments `fail`/appends to
+  `failures` instead of incorrectly passing. *(Codex P1→P0; SYNTHESIS §3.1)*
 
-- [ ] `[Big Pickle]` `{medium}` **Fix Bridge 12 snippet CI failures.**
-  `ci.sh §6` — expand the heuristic import set to cover `float` (and any other missing module
-  used by bridge snippets). Verify all 12 bridges pass `ci.sh §6` cleanly. The current fallback
-  `BRIDGE_STD_IMPORTS` omits `float`; Bridge 12's `float`-using snippets fail. Either expand
-  the static set or improve the import auto-detection. *(DeepSeek P0; SYNTHESIS §3.3)*
+- [x] `[Big Pickle]` `{medium}` **Fix Bridge 12 snippet CI failures.**
+  `ci.sh §6` — expanded `BRIDGE_STD_IMPORTS` to cover `float`. *(DeepSeek P0; SYNTHESIS §3.3)*
 
-- [ ] `[Big Pickle]` `{low}` **Narrow `.gitignore` `!**/solution/*.err`.**
-  Remove `!**/solution/*.err` — `compile_fail` never reads `.err` files from `solution/`
-  directories (it reads `$dir/$module.err` for koans). The rule is unnecessary and exposes
-  transient compiler logs in the worktree. Keep only `!**/*_koan.err`. *(Codex P1; SYNTHESIS §3.2)*
+- [x] `[Big Pickle]` `{low}` **Narrow `.gitignore` `!**/solution/*.err`.**
+  Removed `!**/solution/*.err` — `compile_fail` never reads `.err` files from `solution/`
+  directories (it reads `$dir/$module.err` for koans). Solution `.err` files are transient
+  compiler logs, not tracked. *(Codex P1; SYNTHESIS §3.2)*
 
 - [ ] `[User]` `{low}` **Enable CI workflow.**
   GitHub Actions workflow is `if: false`. Enabling it needs the flake SSH input `mise` wired
@@ -55,23 +50,24 @@ compile. "Looks plausible" is not done.
 
 ## P1 — correctness + documentation
 
-- [ ] `[Sonnet]` `{medium}` **Bridge "Why Mercury" sections: add to bridges 01–03, 07–09, 12.**
-  Every bridge should name the checked property Mercury enforces. Follow bridge 05's format:
-  "One logical relation with two checked directions." Bridges 01–03, 07–09, and 12 currently
-  lack mechanism-specific framing. *(All 4 models; SYNTHESIS §1.4)*
+- [x] `[Sonnet]` `{medium}` **Bridge "Why Mercury" sections: add to bridges 01–03, 07–09, 12.**
+  Added mechanism-specific `**Why Mercury:**` blocks to bridges 01, 02, 03, 07, 08, 09 (after
+  the `**After:**` line, bridge 05's format). Bridge 12 already had one — left as is.
+  *(All 4 models; SYNTHESIS §1.4)*
 
-- [ ] `[Sonnet]` `{low}` **Root README "any order" → sub-path recommendations.**
-  Line 27: replace "Tooling, Concurrency, and Advanced can be taken in any order" with
-  concrete ordering: "Recommended: Tooling → Concurrency → Advanced; Advanced 01 (FFI) → 02
-  (solver) → 03–07 (any order)." *(All 4 models; SYNTHESIS §1.5)*
+- [x] `[Sonnet]` `{low}` **Root README "any order" → sub-path recommendations.**
+  Replaced the "any order" line with "Tooling → Concurrency → Advanced; within Advanced,
+  01 (FFI) → 02 (solver) → 03–07 (any order)." *(All 4 models; SYNTHESIS §1.5)*
 
-- [ ] `[Sonnet]` `{medium}` **Reactivation sub-katas 02–07: add individual READMEs.**
-  Each of `00-reactivation/02-maybe/` through `07-*` needs a one-pager explaining what is
-  being reactivated and why. `01-hello-world` is the template. *(DeepSeek P1; SYNTHESIS §2.11)*
+- [x] `[Sonnet]` `{medium}` **Reactivation sub-katas 02–07: add individual READMEs.**
+  Already done — `02-fibonacci` through `07-zookeeper-puzzle` each carry a complete
+  predict/verify one-pager in the `01-hello-world` style. No new pages needed.
+  *(DeepSeek P1; SYNTHESIS §2.11)*
 
-- [ ] `[Sonnet]` `{low}` **Bridge 10 README: choose "lost-work" semantics explicitly.**
-  The puzzle README currently uses both "at-least-once" and "lost-work." State "lost-work
-  semantics (items in flight when a worker crashes are not retried)." *(BP + Laguna; SYNTHESIS §3.4)*
+- [x] `[Sonnet]` `{low}` **Bridge 10 README: choose "lost-work" semantics explicitly.**
+  Added a "Delivery semantics: this is lost-work, not at-least-once" note to Task 4 of the
+  bridge 10 README, stating the in-flight item is not retried and pointing to the solution
+  notes for why the skip falls out of the take/throw ordering. *(BP + Laguna; SYNTHESIS §3.4)*
 
 - [ ] `[User]` `{low}` **Verify error-message quoting in koan READMEs against actual `mmc`.**
   Some koan READMEs paraphrase compiler output rather than quoting verbatim. Run koans through
@@ -80,50 +76,63 @@ compile. "Looks plausible" is not done.
 
 ## P2 — polish
 
-- [ ] `[Sonnet]` `{low}` **Link TEMPLATES.md from track READMEs.**
-  Add a "see `docs/TEMPLATES.md` for the canonical section order" note in each track/format
-  README. *(Laguna; SYNTHESIS §1.9)*
+- [x] `[Sonnet]` `{low}` **Link TEMPLATES.md from track READMEs.**
+  Added an "Adding a …? See `docs/TEMPLATES.md`" footer to the 4 format READMEs
+  (katas/koans/puzzles/bridge) and all 8 kata track READMEs, each naming its template.
+  *(Laguna; SYNTHESIS §1.9)*
 
-- [ ] `[Big Pickle]` `{low}` **Fix parser quadratic append.**
+- [x] `[Big Pickle]` `{low}` **Fix parser quadratic append.**
   `parser.m:28-35`: `Acc ++ [Key - Val]` → `[Key - Val | Acc]` with a single `reverse` on
-  success. Verified vs. `mmc` — the result type is `assoc_list(string, string)`, order
-  doesn't matter for semantics, only for iteration order. *(Codex; SYNTHESIS §2.15)*
+  success. Interface unchanged — consumers unaffected. *(Codex; SYNTHESIS §2.15)*
 
-- [ ] `[Sonnet]` `{low}` **Document generic printer `canonicalize` erasure.**
-  Add a note in the solution README explaining that `canonicalize` strips type-name
-  information from functors, so `yes(yes(42))` prints as `yes/1`. *(Laguna; SYNTHESIS §2.13)*
+- [x] `[Sonnet]` `{low}` **Document generic printer `canonicalize` erasure.**
+  Added a "Type-name erasure" section to the solution README: `deconstruct` returns the
+  constructor's functor name + arity but erases the owning type, so `yes(yes(42))` is worked
+  from `yes/1` and `type_of`/`type_name` is what recovers the type. *(Laguna; SYNTHESIS §2.13)*
 
-- [ ] `[Sonnet]` `{medium}` **Meta-interpreter: add concrete failure demo for depth version.**
-  The counter-based freshness fix is implemented and correct. But the puzzle README presents
-  the depth version as the starting point without a test demonstrating the failure. Either
-  (a) add a capture-the-variable regression test that fails under depth, or (b) use the counter
-  version as the default and demote depth to a "why this matters" sidebar. *(Laguna; SYNTHESIS §2.14)*
+- [x] `[Sonnet]` `{medium}` **Meta-interpreter: add concrete failure demo for depth version.**
+  Already done (option a) — `capture_prog` in `meta_interp.m` is the minimal capture trigger,
+  `main` runs it under "variable freshness" as a regression guard, and the solution README
+  carries the mmc-verified `false`-vs-`test(7, 9)` contrast table. *(Laguna; SYNTHESIS §2.14)*
 
-- [ ] `[Sonnet]` `{medium}` **Add "Why Mercury" framing to determinism kata READMEs.**
-  At minimum, each determinism kata should open with: "In most languages determinism is a
-  runtime property; in Mercury it is a compile-time contract." Extend to other kata tracks
-  as time permits. *(DeepSeek; SYNTHESIS §2.16)*
+- [x] `[Sonnet]` `{medium}` **Add "Why Mercury" framing to determinism kata READMEs.**
+  Added a `**Why Mercury:**` opener to all 7 determinism katas (01–07), each leading with the
+  "runtime property vs. compile-time contract" line plus a kata-specific tie-in. Extension to
+  other kata tracks left as optional follow-up. *(DeepSeek; SYNTHESIS §2.16)*
 
-- [ ] `[Opus]` `{high}` **`combinators.m:28`: replace `fail` body with empty body.**
-  `empty(_, _, _) :- fail.` → `empty(_, _, _).` with `:- mode empty(out, in, out) is failure.`
-  The empty body signals "defined to have no solutions"; `fail` signals "computes `fail`."
-  Verify the solution still compiles and the determinism error fires. *(All 4; SYNTHESIS §1.6)*
+- [x] `[Opus]` `{high}` **`combinators.m:28`: replace `fail` body with empty body — REJECTED, reviewers were wrong.**
+  mmc-verified: `empty(_, _, _).` does **not** compile under `:- mode empty(out, in, out) is failure` —
+  a fact body asserts success and must bind the `out` arg, giving `mode error: argument 2 did not get
+  sufficiently instantiated` (`HeadVar__1` `free`, expected `ground`). The `:- fail.` body is correct
+  and required: with no success path the output is legitimately unbound. Kept `:- fail.`, added a durable
+  explanatory comment in `combinators.m`, a "The `empty` predicate" expansion in the solution README, and
+  a new Mode-system lesson in `COMPILER-LESSONS.md`. *(All 4 models flagged this; all 4 were mistaken about
+  Mercury — the `[Opus]` "wrong fix silently propagates" case. SYNTHESIS §1.6)*
 
 ## P3 — scope expansion (post-release)
 
-- [ ] `[Opus]` `{xhigh}` **Function-vs-predicate kata or bridge.**
-  Design an exercise where the learner must choose between function and predicate form for the
-  same logic, and the choice affects mode/determinism inference or composability. Bridge 12
-  (currying) partially covers this; a dedicated exercise would close the gap. *(DS, Laguna)*
+- [x] `[Opus]` `{xhigh}` **Function-vs-predicate kata or bridge.**
+  Added `katas/mode-system/09-func-vs-pred/` (start.m + README + runtests, index row added).
+  Three forced cases — total/det (func), partial/semidet (pred vs maybe-returning func),
+  multi-valued/nondet (pred only) — plus a pointer to `05-mode-specific-clauses` for reverse
+  modes and `bridge/12` for currying. Stub compiles; worked reference verified green via `mmc`.
+  *(DS, Laguna)*
 
-- [ ] `[Opus]` `{high}` **IO design patterns kata.**
-  Cover `io.file` reading, `io.res` error handling, reading lines into a list. Currently
-  only in bridge 11's solution notes. A kata would make this first-class. *(DeepSeek)*
+- [x] `[Opus]` `{high}` **IO design patterns kata.**
+  Added `katas/foundations/12-io-patterns/` (start.m + README + runtests, foundations index
+  row added → 13; root README chart 12→13). Three exercises: `read_lines` (the ok/eof/error
+  three-way read loop folded into `io.res(list)`), `load_lines` (open/read/close with
+  error-as-value propagation + the missing-file → error(_) path), and a pure `count_nonblank`
+  (IO-vs-logic separation). Hermetic: `main` writes a fixture, runs the checks, removes it.
+  Stub start.m compiles & runs (4 expected FAILs); identical-structure reference verified
+  build+run all-PASS via `mmc` (asm_fast.par.gc.stseg). *(DeepSeek)*
 
-- [ ] `[Opus]` `{xhigh}` **Mutable state kata (`store`/`store_mutvar`/`io.mutvar`).**
-  The only mutable-state exercise is `00-reactivation/06-pure-randomness`. A kata covering
-  threaded mutable state with `store_mutvar` and `io.mutvar` would address a real Mercury
-  pattern. *(DS, Laguna)*
+- [x] `[Opus]` `{xhigh}` **Mutable state kata (`store`/`store_mutvar`/`io.mutvar`).**
+  Added `katas/advanced/08-mutable-state/` (start.m + README + runtests, index row added).
+  Covers `store(S)` heaps with `generic_mutvar` threaded `di`/`uo` (private `!S` and io-tied
+  `!IO`), the `<= store.store(S)` helper constraint, the uniqueness-as-compile-error story
+  (real mode-error message quoted), and when a pure accumulator is the better tool. Stub
+  compiles; worked reference verified green via `mmc`. *(DS, Laguna)*
 
 - [ ] *(see `CLP-PLAN.md`)* **Solver types / CLP(FD) engine.**
   The solver-types kata is correctly marked conceptual-only. `CLP-PLAN.md` tracks the

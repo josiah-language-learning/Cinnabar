@@ -20,7 +20,12 @@ Work them in order. The later katas assume the earlier ones.
 | `09-mode-inference/` | Goal reordering, multi-mode predicates, reading mode errors |
 | `10-record-update/` | `^` field access, `:=` functional update, chained updates, copy-on-modify pattern |
 | `11-stdlib-collections/` | `bag`, `bimap`, `array` vs `version_array` — less-visited stdlib collections |
+| `12-io-patterns/` | File IO patterns: `io.open_input`/`close_input`, `read_line_as_string` (ok/eof/error), `io.res` errors-as-values, IO vs pure logic |
 
 ## Build
 
 The dev shell provided by the project `flake.nix` sets `asm_fast.par.gc.stseg` as the default grade. A bare `mmc --make <module>` will use that grade. If you see a "standard library not found" error, confirm you entered the shell with `nix develop` before building.
+
+---
+
+**Adding a kata?** See [`docs/TEMPLATES.md`](../../docs/TEMPLATES.md) for the canonical section order (the *Kata* template).
