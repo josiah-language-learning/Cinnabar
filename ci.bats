@@ -22,3 +22,14 @@ setup() {
     run ./start
     [ "$output" = "" ]
 }
+
+# ---------------------------------------------------------------------
+# 21-io-uniqueness
+# ---------------------------------------------------------------------
+KOAN_21="$CINNABAR/koans/foundations/21-io-uniqueness"
+
+@test "21-io-uniqueness: runtests.bats proves koan compilation fails correctly" {
+    cd "$KOAN_21"
+    run ./runtests.bats
+    [ "$status" -eq 0 ]
+}

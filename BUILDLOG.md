@@ -191,3 +191,36 @@ Deliberate-error pedagogy belongs in koans, where the failure is checked and
 cannot silently drift. The hello-world cluster now spans one producing kata and
 three diagnostic koans, each sitting in the CI lane that actually verifies it.
 Foundations koan count: 20 → 23.
+
+---
+
+## Session 4 — 2026-06-23 04:26 UTC
+
+### bats migration; koan CI error-matching design decision
+
+**What changed.** `ci.sh` (350 lines, bash) replaced by `ci.bats` and per-exercise
+`runtests.bats` files. Kata 01 gets two solution files (`start_bang.m`,
+`start_explicit.m`) and a four-test `runtests.bats`: compile + output for each,
+plus notation checks (`^[^%]*!IO` and `^[^%]*IO[0-9]`) that verify the learner
+used the intended style rather than accidentally producing the right output another
+way. Koan 21 gets its own `runtests.bats` delegated from `ci.bats`.
+
+**A design decision worth recording: how brittle should the koan error check be?**
+Two approaches were on the table for verifying that a koan still fails for the
+right reason:
+
+1. **Line-by-line `.err` snapshot matching** (stripping `file:NNN:` prefixes before
+   comparing) — what the old `ci.sh` did. Catches diagnostic drift precisely, but
+   breaks if the Mercury compiler rewrites its error prose, even harmlessly.
+
+2. **Key-phrase checks** — assert `$status -ne 0`, then `[[ "$output" == *"unique-mode error"* ]]`
+   and `[[ "$output" == *"IO0"* ]]`. Survives minor wording changes; fails fast if
+   the error class or the culprit variable changes.
+
+The decision to go with option 2 was driven by an observed data point: the Mercury
+project currently has a 22.01.9 beta in progress (most recent build 2026-06-17) and
+active ROTDs through 2026-06-21, after a stable series that last shipped in 2022.
+Active compiler work increases the chance of error-message rewording. Key-phrase
+matching tolerates that without requiring snapshot refreshes across every koan every
+release. The `.err` snapshot is kept as documentation; the CI check is deliberately
+looser.
