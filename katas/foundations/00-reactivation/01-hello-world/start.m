@@ -15,6 +15,6 @@
 % Thread the IO state through each io.write_string call. There are two
 % idiomatic ways — explicit (IO0, IO1, IO2, ...) or the !IO sugar. Try both.
 % Create start_bang.m for the !IO version and start_explicit.m for the
-% explicit version. Run runtests to check both.
+% explicit version. Run runtests.bats to check both.
 main(!IO) :-
     io.write_string("", !IO).

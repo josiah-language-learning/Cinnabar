@@ -30,9 +30,20 @@ There are two idiomatic solutions, and they compile to the same thing:
   identical result.
 
 Implement both approaches (edit `start_bang.m` and `start_explicit.m`), then run
-`runtests` to compile both and check your output against the four lines above.
+`runtests.bats` to compile both and check your output against the four lines above.
 (If you get stuck on the threading itself, the fixed program in
 `koans/foundations/21-io-uniqueness/solution/fixed.m` shows the shape.)
+
+When all four `runtests.bats` tests pass, wire them into `ci.bats` at the repo
+root by adding:
+
+```bash
+@test "01-hello-world: runtests.bats passes" {
+    cd "$KATA"
+    run ./runtests.bats
+    [ "$status" -eq 0 ]
+}
+```
 
 > If you see `unique-mode error: ... variable 'IO0' is still live`, you reused a
 > consumed IO state in two calls. That mistake — and why the mode system forbids
