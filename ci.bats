@@ -33,3 +33,14 @@ KOAN_21="$CINNABAR/koans/foundations/21-io-uniqueness"
     run ./runtests.bats
     [ "$status" -eq 0 ]
 }
+
+# ---------------------------------------------------------------------
+# 23-io-func-result
+# ---------------------------------------------------------------------
+KOAN_23="$CINNABAR/koans/foundations/23-io-func-result"
+
+@test "23-io-func-result: runtests.bats proves koan compilation fails correctly" {
+    cd "$KOAN_23"
+    run ./runtests.bats
+    [ "$status" -eq 0 ]
+}
