@@ -12,10 +12,13 @@ setup() {
     run mmc --make --grade "$GRADE" io_uniqueness_koan
     [ "$status" -ne 0 ]
     [[ "$output" == *"In clause for"* ]]
+    [[ "$output" == *"in argument 2 of call to predicate"* ]]
     [[ "$output" == *"io.write_string"* ]]
     [[ "$output" == *"unique-mode error"* ]]
     [[ "$output" == *"clobber its argument"* ]]
-    [[ "$output" == *"IO0"* ]]
+    [[ "$output" == *"IO0' is still"* ]]
+    [[ "$output" == *"live."* ]]
+    [[ "$output" == *"Error making"* ]]
 }
 
 @test "solution/fixed.m compiles and produces correct output" {
